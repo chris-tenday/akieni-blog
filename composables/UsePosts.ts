@@ -6,9 +6,15 @@
 import {computed, ComputedRef, ref,watch} from "vue";
 import {useStore} from "vuex";
 import Post from "~/store/models/Post";
+import {useRoute} from "vue-router";
 
 export default function usePosts()
 {
+    /**
+     * store.
+     * @type {Store<any>}
+     */
+    const store=useStore();
     /**
      * State to maintain how much th user scrolled.
      */
@@ -23,11 +29,6 @@ export default function usePosts()
      */
     const loading=ref(false);
 
-    /**
-     * store.
-     * @type {Store<any>}
-     */
-    const store=useStore();
 
     /**
      * Function for fetching and loading posts into the store.
@@ -36,6 +37,7 @@ export default function usePosts()
 
         await store.dispatch("loadPosts");
     }
+
 
     /**
      * Function to fetch posts on user scroll.

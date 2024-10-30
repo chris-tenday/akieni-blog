@@ -1,8 +1,10 @@
+// noinspection TypeScriptValidateTypes
+
 import {createStore} from "vuex";
 import {states,getters,mutations} from "~/store/config";
 import {useFetch} from "nuxt/app";
-import {ref} from "vue";
 import Post from "~/store/models/Post";
+import Comment from "~/store/models/Comment";
 
 const store=createStore({
    state:states,
@@ -15,11 +17,9 @@ const store=createStore({
         * @param commit
         * @param lastPostId
         */
-        async loadPosts({commit})
-        {
-            var baseUrl="http://127.0.0.1:8000/api";
-
-            const {data,error}=await useFetch(`${baseUrl}/posts/get/0`);
+       async loadPosts({commit,state})
+       {
+            const {data,error}=await useFetch(`${state.baseUrl}/posts/get/0`);
             if(error.value===null)
             {
 
@@ -53,10 +53,8 @@ const store=createStore({
         },
        async fetchPosts({commit},lastPostId:number)
        {
-           var baseUrl="http://127.0.0.1:8000/api";
-
-           console.log("scrolled fetching now..=>"+lastPostId);
-           $fetch(`${baseUrl}/posts/get/${lastPostId}`)
+           //console.log("scrolled fetching now..=>"+lastPostId);
+           $fetch(`${state.baseUrl}/posts/get/${lastPostId}`)
                .then((data)=>{
                     console.log("fetched data success...");
                     console.log(data[0]);
@@ -81,6 +79,35 @@ const store=createStore({
 
            //console.log(data.value);
 
+       },
+       /**
+        * Method to get comments of a post.
+        * @param commit
+        * @param state
+        * @param postId
+        */
+       async getComments({commit,state},postId:number)
+       {
+           console.log("id:"+postId);
+           const {data,error}=await useFetch(`${state.baseUrl}/comments/get/${postId}`);
+           if(error.value===null)
+           {
+               var d=data.value
+               for(let i=0; i<d.length; i++)
+               {
+                   const comment=new Comment();
+                   comment.id=d[i].id;
+                   comment.postId=postId;
+                   comment.name=d[i].name;
+                   comment.email=d[i].email;
+                   comment.body=d[i].body;
+                   commit("STORE_COMMENT",comment);
+               }
+           }
+           else
+           {
+               console.log("Error while getting post comments... =>"+error.value);
+           }
        }
 
    }

@@ -45,4 +45,9 @@ export default defineNuxtConfig({
     '@nuxtjs/composition-api/module', // Ensure you have the Composition API if needed
     // other modules
   ],
+  runtimeConfig:{
+    public:{
+      baseUrl:"http://127.0.0.1:8000/api"
+    }
+  }
 })

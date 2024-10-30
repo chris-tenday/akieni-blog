@@ -1,33 +1,9 @@
 <template>
   <div>
-
+    <Header/>
     <div class="container rounded-3" style=" background-color: #f4f4f4;">
-      <div class="row mt-3 bg-color rounded-3" style="height:70px;">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <div class="container-fluid">
-            <img src="/assets/img/logo.png" style="max-width: 150px;" class="img-fluid navbar-brand">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-              <ul class="navbar-nav">
-                <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="#"><i class="fa fa-home"></i> Home</a>
-                </li>
-                <li class="nav-item">
-                  <input type="text" class="form-control rounded-5 input-bg" style=" margin: auto; max-height:45px;" placeholder="Search here...">
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#"><i class="fas fa-user"></i> Login</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </nav>
-      </div>
-
-      <div class="row mt-3 d-flex justify-content-center">
-        <div class="col-md-6 " >
+        <div class="row mt-3 d-flex justify-content-center">
+          <div class="col-md-6 " >
           <div class="row">
             <small>Recents posts</small>
             <div v-for="post in posts" class="col-md-12 bg-color rounded-3 p-3 mb-3" style="">
@@ -35,7 +11,8 @@
               <img src="/assets/img/img1.webp" alt="" class="img-fluid rounded-3">
               <h3>{{ post.title }}</h3>
               <p class="mb-0" >{{post.body}}....
-                <a href="#myModal" data-bs-toggle="modal" data-bs-target="#myModal">Read post</a></p>
+                <!--<a href="#myModal" data-bs-toggle="modal" data-bs-target="#myModal">Read post</a>!-->
+              <NuxtLink :to="`/posts/${post.id}`">Read post</NuxtLink></p>
               <a href=""><small><i class="fa fa-comments"></i> 0</small></a>
 
               <div class="row mt-2">
@@ -54,7 +31,7 @@
             </div>
           </div>
         </div>
-      </div>
+        </div>
     </div>
 
     <div class="container mt-5">
@@ -115,15 +92,15 @@
 <script setup lang="ts">
 
 import usePosts from "~/composables/UsePosts";
-import Post from "~/store/models/Post";
-import {definePageMeta} from "nuxt/dist/pages/runtime";
 import {onMounted} from "vue";
+import Header from "~/components/Header.vue";
 
 const {posts,scrolling,initializeStore,loading}=usePosts();
 
 await initializeStore();
 
 onMounted(()=>{
+
   /**
    * Whenever the user scrolls , keep fetching posts.
    */
