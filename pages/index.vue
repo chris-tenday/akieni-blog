@@ -49,6 +49,9 @@
                 </div>
               </div>
             </div>
+            <div class="col-md-12">
+              <p>Please wait fetching posts...</p>
+            </div>
           </div>
         </div>
       </div>
@@ -116,18 +119,16 @@ import Post from "~/store/models/Post";
 import {definePageMeta} from "nuxt/dist/pages/runtime";
 import {onMounted} from "vue";
 
-const {posts,fetchPosts,initializeStore}=usePosts();
+const {posts,scrolling,initializeStore,loading}=usePosts();
 
 await initializeStore();
-console.log("hey:"+posts.length);
 
 onMounted(()=>{
   /**
    * Whenever the user scrolls , keep fetching posts.
    */
   window.addEventListener("scroll",()=>{
-    fetchPosts();
-    console.log("data fetching start");
+    scrolling();
   })
 });
 
