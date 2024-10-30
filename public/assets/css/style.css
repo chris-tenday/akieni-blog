@@ -1,0 +1,33 @@
+.input-bg
+{
+    background-color: #f3f3f3;
+}
+body {
+    font-family: 'Lato', sans-serif;
+    margin: 20px;
+    background-color: #f4f4f4f4;
+}
+.lato-light-italic,p ,input,small,li{
+    font-family: "Lato", serif;
+    font-weight: 300;
+    font-style: italic;
+}
+
+.roboto-bold,h1,h2,h3,h4,h5,h6 {
+    font-family: "Roboto", serif;
+    font-weight: 700;
+    font-style: normal;
+}
+.bg-color
+{
+    background-color: #ffffff;
+}
+
+
+.scrollable-div
+{
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+
+
