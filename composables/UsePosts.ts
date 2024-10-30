@@ -9,7 +9,18 @@ import Post from "~/store/models/Post";
 
 export default function usePosts()
 {
+    /**
+     * State to maintain how much th user scrolled.
+     */
     const scroll=ref(0);
+    /**
+     * State used to store the maximum scroll the user scrolled,
+     * this is to prevent refetching the same set of posts
+     */
+    const maxScrolled=ref(0);
+    /**
+     * State to control the display of the loader view/icon ,when asynchronously loading data.
+     */
     const loading=ref(false);
 
     /**
@@ -19,16 +30,7 @@ export default function usePosts()
     const store=useStore();
 
     /**
-     * Last post fetched and store in store.
-     * @type {ComputedRef<unknown>}
-     */
-    const lastPostId:ComputedRef<number>=computed(()=>{
-        const p=store.getters.GET_POSTS;
-        return (p.length>0)? p.at(-1).id : 0 ; /** id of the last post */
-    });
-
-    /**
-     * Function fetching and loading posts into the store.
+     * Function for fetching and loading posts into the store.
      */
     const initializeStore=async ()=>{
 
@@ -41,11 +43,17 @@ export default function usePosts()
     const fetchPosts=async () =>{
         loading.value=true;
         const id:number = store.getters.GET_LASTPOSTID; /** get last post ID on the store. */
-        //store.dispatch("fetchPosts",id);
+
+        store.dispatch("fetchPosts",id).then(()=>{
+            loading.value=false;
+        });
 
 
     };
 
+    /**
+     * Handling user scroll.
+     */
     const scrolling=() =>{
         scroll.value=window.scrollY
     };
@@ -54,8 +62,9 @@ export default function usePosts()
      * Watch how much the user scrolled in order to fetch some data
      */
     watch(scroll,(newValue)=>{
-        if((newValue/2) >1000)
+        if((newValue - maxScrolled.value) > 1000)
         {
+            maxScrolled.value=newValue
             /**
              * worth fetching new data.
              */

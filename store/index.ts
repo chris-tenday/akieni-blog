@@ -55,8 +55,30 @@ const store=createStore({
        {
            var baseUrl="http://127.0.0.1:8000/api";
 
-           //const {data,error}=await $fetch(`${baseUrl}/posts/get/${lastPostId}`);
-           console.log("scrolled..=>"+lastPostId);
+           console.log("scrolled fetching now..=>"+lastPostId);
+           $fetch(`${baseUrl}/posts/get/${lastPostId}`)
+               .then((data)=>{
+                    console.log("fetched data success...");
+                    console.log(data[0]);
+                    for(let i=0; i<data.length; i++)
+                    {
+                        const post=new Post();
+                        post.id=data[i].id;
+                        post.title=data[i].title
+                        post.body=data[i].body;
+                        post.userId=data[i].userId;
+
+                        /**
+                         * Add this post to the store.
+                         */
+                        commit("ADD_POST",post);
+                    }
+
+               })
+               .catch((error)=>{
+                    console.log("error fetching...=>"+error.value);
+               });
+
            //console.log(data.value);
 
        }
