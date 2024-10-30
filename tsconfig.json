@@ -1,4 +1,27 @@
 {
-  // https://nuxt.com/docs/guide/concepts/typescript
-  "extends": "./.nuxt/tsconfig.json"
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./*"],
+      "@/*": ["./*"],
+      "#app": ["./node_modules/nuxt/dist/app"]
+    },
+    "types": ["@nuxt/types", "@types/node"]
+  },
+  "include": [
+    "nuxt.config.ts",
+    "store/**/*",
+    "plugins/**/*",
+    "composables/**/*",
+    "middleware/**/*",
+    "pages/**/*",
+    "layouts/**/*"
+  ]
 }
