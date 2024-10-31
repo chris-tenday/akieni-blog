@@ -1,6 +1,7 @@
 <template>
   <div>
     <Header/>
+
     <div class="container rounded-3" style=" background-color: #f4f4f4;">
 
       <div class="row mt-3 d-flex justify-content-center">
@@ -38,11 +39,6 @@
         </div>
     </div>
 
-    <div class="container mt-5">
-      <!-- The Modal -->
-
-    </div>
-
   </div>
 </template>
 
@@ -52,6 +48,7 @@ import usePosts from "~/composables/UsePosts";
 import {onMounted} from "vue";
 import Header from "~/components/Header.vue";
 import PublishPost from "~/components/PublishPost.vue";
+import RestrictedFeature from "~/components/RestrictedFeature.vue";
 
 const {posts,scrolling,initializeStore,loading}=usePosts();
 
