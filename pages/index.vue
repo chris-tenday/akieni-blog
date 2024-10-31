@@ -12,9 +12,7 @@
           <div class="row">
             <small>Recents posts</small>
             <SinglePost v-for="post in posts" :post="post"/>
-            <div class="col-md-12">
-              <p>Please wait fetching posts...</p>
-            </div>
+            <Loader/>
           </div>
         </div>
         </div>
@@ -31,6 +29,7 @@ import Header from "~/components/Header.vue";
 import PublishPost from "~/components/PublishPost.vue";
 import RestrictedFeature from "~/components/RestrictedFeature.vue";
 import SinglePost from "~/components/SinglePost.vue";
+import Loader from "~/components/Loader.vue";
 
 const {posts,scrolling,initializeStore,loading}=usePosts();
 
