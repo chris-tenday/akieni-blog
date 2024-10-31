@@ -13,10 +13,10 @@
                 <NuxtLink class="nav-link active" aria-current="page" to="/"><i class="fa fa-home"></i> Home</NuxtLink>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#publishSection"><i class="fa fa-plus-circle"></i> Publish</a>
+                <a class="nav-link active" href="#" aria-current="page" data-bs-toggle="modal" data-bs-target="#publish"><i class="fa fa-plus-circle"></i> Publish</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#myModal"><i class="fas fa-user"></i> Login</a>
+                <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#login"><i class="fas fa-user"></i> Login</a>
               </li>
             </ul>
           </div>
@@ -25,11 +25,23 @@
     </div>
   </div>
 
-  <Modal>
+  <!-- login Modal !-->
+  <Modal target-id="login">
     <div class="container">
       <div class="row d-flex justify-content-center">
         <div class="col-md-12">
           <UserAccount/>
+        </div>
+      </div>
+    </div>
+  </Modal>
+
+  <!-- publish Post Modal !-->
+  <Modal target-id="publish">
+    <div class="container">
+      <div class="row d-flex justify-content-center">
+        <div class="col-md-12">
+          <PublishPost/>
         </div>
       </div>
     </div>
@@ -39,9 +51,10 @@
 <script>
 import Modal from "~/components/Modal.vue";
 import UserAccount from "~/components/UserAccount.vue";
+import PublishPost from "~/components/PublishPost.vue";
 export default {
   name: "Header",
-  components: {UserAccount, Modal}
+  components: {PublishPost, UserAccount, Modal}
 }
 </script>
 

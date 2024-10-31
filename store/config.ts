@@ -3,11 +3,13 @@
  */
 import Post from "~/store/models/Post";
 import Comment from "~/store/models/Comment";
+import User from "~/store/models/User";
 
 export const states={
     posts:[] as Post[],
-    baseUrl:"http://127.0.0.1:8000/api",
-    comments:[] as Comment[]
+    baseUrl:"http://127.0.0.1:8000/api", //TODO:Migrate this in a .env file
+    comments:[] as Comment[],
+    user:User
 }
 
 /**
@@ -16,7 +18,8 @@ export const states={
 export const getters={
     GET_POSTS: (state:any) : Post[] => state.posts /** get posts from the store */,
     GET_LASTPOSTID:(state:any) : number => (state.posts.length>0)? state.posts.at(-1).id : 0,
-    GET_COMMENTS:(state:any) : Comment[] => state.comments
+    GET_COMMENTS:(state:any) : Comment[] => state.comments,
+    GET_USER:(state:any) : User => state.user
 }
 
 /**
@@ -46,5 +49,6 @@ export const mutations={
             }
         }
     },
-    STORE_COMMENT:(state,comment:Comment) => state.comments.push(comment)
+    STORE_COMMENT:(state,comment:Comment) => state.comments.push(comment),
+    SET_USER:(state:any,user:User) => state.user=user
 }

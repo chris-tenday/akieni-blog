@@ -51,7 +51,7 @@ const store=createStore({
                 console.log(error.value);
             }
         },
-       async fetchPosts({commit},lastPostId:number)
+       async fetchPosts({commit,state},lastPostId:number)
        {
            //console.log("scrolled fetching now..=>"+lastPostId);
            $fetch(`${state.baseUrl}/posts/get/${lastPostId}`)
