@@ -6,7 +6,10 @@
           <slot></slot>
         </div>
         <div :class="`overlay ${isUserConnected}`" id="overlay">
-          <a href="#" class="btn btn-warning rounded-0"><i class="fa fa-lock"></i> Login</a>
+          <div>
+            <a href="#" aria-current="page" data-bs-toggle="modal" data-bs-target="#login" class="btn btn-warning rounded-0"><i class="fa fa-lock"></i> Login</a>
+          </div>
+
         </div>
       </div>
     </div>

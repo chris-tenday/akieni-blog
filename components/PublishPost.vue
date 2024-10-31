@@ -4,7 +4,7 @@
 
       <div id="publishSection" class="col-md-12 bg-color rounded-3 p-3 mb-3">
         <h6>What's on your mind?</h6>
-        <RestrictedFeature>
+        <RestrictedFeature >
           <form action="#" @submit.prevent="publishPost(post)">
             <div class="form-group mb-2">
               <input v-model="post.title" type="text" class="form-control rounded-0" placeholder="Write the title of your post">
