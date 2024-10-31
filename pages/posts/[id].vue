@@ -1,7 +1,5 @@
 <template>
   <div>
-    <Header/>
-
     <div class="container rounded-3" style=" background-color: #f4f4f4;">
       <div class="row bg-color mt-3 rounded-3">
         <div class="col-md-7 p-0" >

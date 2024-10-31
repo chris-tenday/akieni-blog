@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header/>
+
 
     <div class="container rounded-3" style=" background-color: #f4f4f4;">
 
