@@ -16,7 +16,8 @@
                 <a class="nav-link active" href="#" aria-current="page" data-bs-toggle="modal" data-bs-target="#publish"><i class="fa fa-plus-circle"></i> Publish</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#login"><i class="fas fa-user"></i> Login</a>
+                <a v-if="user==null" class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#login"><i class="fas fa-user"></i> Login</a>
+                <a v-else class="nav-link" style="color:blue;" href="#" ><i class="fa fa-user"></i> {{user.name}} [x]</a>
               </li>
             </ul>
           </div>
@@ -30,7 +31,7 @@
     <div class="container">
       <div class="row d-flex justify-content-center">
         <div class="col-md-12">
-          <UserAccount @close="console.log('ccccccccccccc')"/>
+          <UserAccount @auth="closeModal"/>
         </div>
       </div>
     </div>
@@ -52,9 +53,29 @@
 import Modal from "~/components/Modal.vue";
 import UserAccount from "~/components/UserAccount.vue";
 import PublishPost from "~/components/PublishPost.vue";
+import {useStore} from "vuex";
 export default {
+  setup(){
+    const store=useStore();
+
+    return {
+      store
+    }
+  },
   name: "Header",
-  components: {PublishPost, UserAccount, Modal}
+  components: {PublishPost, UserAccount, Modal},
+  computed:{
+    user(){
+      return this.store.getters.GET_USER;
+    }
+  },
+  methods:{
+    closeModal() /** method use to close the modal */
+    {
+      document.getElementById("closeBtn").click();
+    }
+  }
+
 }
 </script>
 

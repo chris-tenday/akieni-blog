@@ -6,6 +6,10 @@ export default function()
 {
     const store=useStore();
 
+    /**
+     * Method to register a new user account.
+     * @param user
+     */
     const registerAccount=(user:User)=>{
                                 //"^[a-zA-Z0-9_.-]{1,}@/" //TODO: Validate the user email.
         //TODO:Validate the user password.
@@ -19,6 +23,7 @@ export default function()
             useNotification().display("You've successfully register on Akieni !");
         },5000);
     };
+
 
     return {
         registerAccount

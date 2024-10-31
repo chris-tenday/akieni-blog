@@ -17,7 +17,10 @@
 export default {
   name: "Modal",
   props:{
-    targetId:String
+    targetId:String,
+    onActionComplete:{
+      type:Function,
+    }
   },
   methods:{
     closeModal()

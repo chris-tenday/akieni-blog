@@ -19,7 +19,14 @@ export const getters={
     GET_POSTS: (state:any) : Post[] => state.posts /** get posts from the store */,
     GET_LASTPOSTID:(state:any) : number => (state.posts.length>0)? state.posts.at(-1).id : 0,
     GET_COMMENTS:(state:any) : Comment[] => state.comments,
-    GET_USER:(state:any) : User => state.user
+    GET_USER:(state:any) : User|null =>{
+
+        if(state.user.length===0)
+        {
+            return null;  /** in case the use isn't connected */
+        }
+        return state.user
+    }
 }
 
 /**

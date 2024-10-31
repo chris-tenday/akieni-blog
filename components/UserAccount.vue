@@ -37,20 +37,19 @@
 </template>
 
 <script setup lang="ts">
-import {reactive, ref} from "vue";
+import {reactive, ref,defineEmits} from "vue";
 import User from "~/store/models/User";
 import useAccount from "~/composables/useAccount";
 import useNotification from "~/composables/useNotification";
 
 const login=ref(true);
 const confirmPass=ref('');
-
 const user:User=reactive(new User());
 const emit=defineEmits();
 
 const {registerAccount}=useAccount();
 
-const auth=(authType:string)=>{
+const auth=async (authType:string)=>{
   if(authType==="register")
   {
     /**
@@ -59,10 +58,10 @@ const auth=(authType:string)=>{
     if(user.password!==confirmPass.value)
     {
       useNotification().display("Your passwords did not match","error");
-      //emit("close","Close now");
       return ;
     }
-    registerAccount(user);
+    await registerAccount(user);
+    emit("auth"); /** emit the auth to alert the parent component that the auth is finished.*/
   }
   else
   {
