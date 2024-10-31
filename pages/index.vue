@@ -2,8 +2,12 @@
   <div>
     <Header/>
     <div class="container rounded-3" style=" background-color: #f4f4f4;">
-        <div class="row mt-3 d-flex justify-content-center">
-          <div class="col-md-6 " >
+
+      <div class="row mt-3 d-flex justify-content-center">
+        <div class="col-md-6 " >
+
+          <PublishPost/>
+
           <div class="row">
             <small>Recents posts</small>
             <div v-for="post in posts" class="col-md-12 bg-color rounded-3 p-3 mb-3" style="">
@@ -94,6 +98,7 @@
 import usePosts from "~/composables/UsePosts";
 import {onMounted} from "vue";
 import Header from "~/components/Header.vue";
+import PublishPost from "~/components/PublishPost.vue";
 
 const {posts,scrolling,initializeStore,loading}=usePosts();
 

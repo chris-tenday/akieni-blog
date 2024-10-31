@@ -7,7 +7,7 @@ body {
     margin: 20px;
     background-color: #f4f4f4f4;
 }
-.lato-light-italic,p ,input,small,li{
+.lato-light-italic,p ,input,small,li,textarea{
     font-family: "Lato", serif;
     font-weight: 300;
     font-style: italic;

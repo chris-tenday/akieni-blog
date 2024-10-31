@@ -108,7 +108,41 @@ const store=createStore({
            {
                console.log("Error while getting post comments... =>"+error.value);
            }
+       },
+       /**
+        * Method to publish a post.
+        * @param commit
+        * @param state
+        * @param post
+        */
+       publishPost({commit,state},post:Post)
+       {
+           $fetch(`${state.baseUrl}/posts/publish`,{
+               method:"POST",
+               body:{
+                   title:post.title,
+                   body:post.body,
+                   userId:1 //TODO:Replace this ID with the connected user ID.
+               }
+           })
+               .then((data)=>{
+                   /**
+                    * Complete the post object with the ID.
+                    */
+                   post.id=data.id;
+
+                   /**
+                    * Store this new post in the store.
+                    */
+                   commit("ADD_POST",post);
+                   callback(post.id);
+
+               })
+               .catch((error)=>{
+                   console.log("Error while publishing post.");
+               });
        }
+
 
    }
 });

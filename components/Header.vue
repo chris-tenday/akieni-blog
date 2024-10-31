@@ -10,10 +10,10 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#"><i class="fa fa-home"></i> Home</a>
+                <NuxtLink class="nav-link active" aria-current="page" to="/"><i class="fa fa-home"></i> Home</NuxtLink>
               </li>
               <li class="nav-item">
-                <input type="text" class="form-control rounded-5 input-bg" style=" margin: auto; max-height:45px;" placeholder="Search here...">
+                <NuxtLink class="nav-link active" aria-current="page" to="/"><i class="fa fa-plus-circle"></i> Publish</NuxtLink>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#"><i class="fas fa-user"></i> Login</a>
