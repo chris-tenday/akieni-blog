@@ -50,5 +50,11 @@ export const mutations={
         }
     },
     STORE_COMMENT:(state,comment:Comment) => state.comments.push(comment),
-    SET_USER:(state:any,user:User) => state.user=user
+    SET_USER:(state:any,user:User) =>{
+        state.user=user
+        /**
+         * Store the user in session storage.
+         */
+        sessionStorage.setItem("user",user.toJSON());
+    }
 }
