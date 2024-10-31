@@ -48,9 +48,17 @@ export default function()
         await store.dispatch("getComments",postId.value);
     };
 
+    const addComment=(comment:Comment)=>{
+        comment.name="Chris Tenday"; //TODO:Replace with the data of the connected user.
+        comment.email="tenday@gmail.com"; //TODO:Replace with the data of the connected user.
+        store.dispatch("addComment",comment);
+        //TODO:clear input after commented successfully
+    }
+
     return {
-      post,
-      fetchComments,
-        comments
+        post,
+        fetchComments,
+        comments,
+        addComment
     };
 }

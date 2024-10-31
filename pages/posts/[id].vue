@@ -20,12 +20,8 @@
               <p>{{comment.body}}</p>
             </div>
 
-            <div class="input-group">
-              <input type="text" class="form-control rounded-5 input-bg"  placeholder="Add a comment...">
-              <span class="input-group-text rounded-5 " style="margin-left:3px;">
-                                            <i class="fas fa-check"></i>
-                                        </span>
-            </div>
+            <!-- Add comment component !-->
+            <AddComment :post-id="post.id"/>
 
           </div>
 
@@ -39,6 +35,7 @@
 
 <script setup lang="ts">
 import useSinglePost from "~/composables/useSinglePost";
+import AddComment from "~/components/AddComment.vue";
 
 const {post,fetchComments,comments}=useSinglePost();
 /**

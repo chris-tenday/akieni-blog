@@ -141,6 +141,31 @@ const store=createStore({
                .catch((error)=>{
                    console.log("Error while publishing post.");
                });
+       },
+
+       addComment({commit,state},comment:Comment)
+       {
+           $fetch(`${state.baseUrl}/comments/add`,
+               {
+                       method:"POST",
+                       body:{
+                           postId:comment.postId,
+                           name:comment.name,
+                           email:comment.email,
+                           body:comment.body
+
+                    }
+           })
+               .then((data)=>{
+                   comment.id=data.id;
+                   /**
+                    * Store the comment in the store.
+                    */
+                   commit("STORE_COMMENT",comment);
+               })
+               .catch((error)=>{
+
+               });
        }
 
 
