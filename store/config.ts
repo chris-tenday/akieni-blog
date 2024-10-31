@@ -20,12 +20,27 @@ export const getters={
     GET_LASTPOSTID:(state:any) : number => (state.posts.length>0)? state.posts.at(-1).id : 0,
     GET_COMMENTS:(state:any) : Comment[] => state.comments,
     GET_USER:(state:any) : User|null =>{
-
         if(state.user.length===0)
         {
-            return null;  /** in case the use isn't connected */
+            if(process.client) /** this line of will only be executed on client-side environment */
+            {
+                /**
+                 * Get user data from session storage and loads it in the store for use.
+                 */
+                if(state.user.length===0)
+                {
+                    var json=sessionStorage.getItem("user");
+                    if(json==undefined || json.length<1)
+                    {
+                        return null;
+                    }
+                    state.user=new User().fromJSON(json);
+                }
+
+            }
         }
-        return state.user
+
+        return state.user;
     }
 }
 
