@@ -13,10 +13,10 @@
                 <NuxtLink class="nav-link active" aria-current="page" to="/"><i class="fa fa-home"></i> Home</NuxtLink>
               </li>
               <li class="nav-item">
-                <NuxtLink class="nav-link active" aria-current="page" to="/"><i class="fa fa-plus-circle"></i> Publish</NuxtLink>
+                <a class="nav-link active" aria-current="page" href="#publishSection"><i class="fa fa-plus-circle"></i> Publish</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fas fa-user"></i> Login</a>
+                <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#myModal"><i class="fas fa-user"></i> Login</a>
               </li>
             </ul>
           </div>
@@ -24,11 +24,24 @@
       </nav>
     </div>
   </div>
+
+  <Modal>
+    <div class="container">
+      <div class="row d-flex justify-content-center">
+        <div class="col-md-12">
+          <UserAccount/>
+        </div>
+      </div>
+    </div>
+  </Modal>
 </template>
 
 <script>
+import Modal from "~/components/Modal.vue";
+import UserAccount from "~/components/UserAccount.vue";
 export default {
-  name: "Header"
+  name: "Header",
+  components: {UserAccount, Modal}
 }
 </script>
 
