@@ -2,6 +2,8 @@ import Post from "~/store/models/Post";
 import {useStore} from "vuex";
 import {ref} from "vue";
 import {useRouter} from "vue-router";
+import {useNuxtApp} from "#app";
+import useNotification from "~/composables/useNotification";
 
 export default function()
 {
@@ -24,10 +26,11 @@ export default function()
         loading.value=true;
         await store.dispatch("publishPost",post);
         loading.value=false;
+
         /**
-         * View the published post.
+         * Display a toast notification to the user.
          */
-        //router.push(`/posts/${post.title}`);
+        useNotification().display("Your post is now published.");
 
     }
 

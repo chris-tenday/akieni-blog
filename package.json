@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "nuxt": "^3.13.2",
+    "sweetalert2": "^11.14.4",
     "vue": "latest",
     "vue-router": "latest",
     "vuex": "^4.0.2"

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-md-12 bg-color rounded-3 p-3 mb-3">
+      <div id="publishSection" class="col-md-12 bg-color rounded-3 p-3 mb-3">
         <h6>What's on your mind?</h6>
         <form action="#" @submit.prevent="publishPost(post)">
           <div class="form-group mb-2">
