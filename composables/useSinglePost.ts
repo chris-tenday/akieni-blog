@@ -17,17 +17,20 @@ export default function()
     /**
      * Post to view.
      */
-    const post:ComputedRef<Post>=computed<Post>(()=>{
-        var posts:Post[]=store.getters.GET_POSTS;
-        for(let i=0; i<posts.length; i++) //TODO:Improve this data searching algorithm.
-        {
-            if(posts[i].id==postId.value)
-            {
-                return posts[i];
-            }
+    const post: ComputedRef<Post | null> = computed<Post | null>(() => {
+        const posts: Post[] = store.getters.GET_POSTS;
+
+        const foundPost = posts.find(post => post.id === 1);
+
+        if (foundPost) {
+            console.log("Found post in store...");
+            return foundPost;
         }
-        return new Post();
+
+        console.log("Post not found in store..");
+        return null; // or return undefined;
     });
+
     /**
      * Comments.
      */
@@ -45,7 +48,20 @@ export default function()
     });
 
     const fetchComments=async ()=>{
-        await store.dispatch("getComments",postId.value);
+        /**
+         * If the post data is already available ,no need to fetch it again from server.
+         */
+        console.log("fetch comment=>"+post.value?.title)
+        if(post.value==null)
+        {
+            console.log("post is null");
+            /**
+             * Fetch the post data.
+             */
+            await store.dispatch("getPost",postId.value);
+        }
+
+        //await store.dispatch("getComments",postId.value);
     };
 
     const addComment=(comment:Comment)=>{

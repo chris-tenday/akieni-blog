@@ -19,7 +19,7 @@ const store=createStore({
         */
        async loadPosts({commit,state})
        {
-            const {data,error}=await useFetch(`${state.baseUrl}/posts/get/0`);
+            const {data,error}=await useFetch(`${state.baseUrl}/posts/fetch/0`);
             if(error.value===null)
             {
 
@@ -53,7 +53,7 @@ const store=createStore({
         },
        async fetchPosts({commit,state},lastPostId:number)
        {
-           $fetch(`${state.baseUrl}/posts/get/${lastPostId}`)
+           $fetch(`${state.baseUrl}/posts/fetch/${lastPostId}`)
                .then((data)=>{
                     for(let i=0; i<data.length; i++)
                     {
@@ -163,6 +163,73 @@ const store=createStore({
                .catch((error)=>{
 
                });
+       },
+       async getPost_old({commit,state},postId:number)
+       {
+           console.log("loading single post..=>"+postId);
+           const {data,error}=await useFetch(`${state.baseUrl}/posts/get/${postId}`);
+           console.log(data.value);
+           if(error.value===null)
+           {
+
+               var d=data.value;
+               /**
+                * Add each fetched post in the store.
+                */
+               /**
+                * Instantiate a new Post object.
+                */
+               const post=new Post();
+               post.id=d.id;
+               post.title=d.title;
+               post.userId=d.userId;
+               post.body=d.body;
+
+               /**
+                * Save this post in the store.
+                */
+               commit("ADD_POST",post);
+               console.log("loaded the single post..=>"+post.title);
+           }
+           else
+           {
+               console.log("Errorrr");
+               console.log(error.value);
+           }
+       },
+       async getPost({commit,state},postId:number)
+       {
+           console.log("loading single post..=>"+postId);
+           const {data,error}=await useFetch(`${state.baseUrl}/posts/get/${postId}`);
+           console.log(data.value);
+           if(error.value===null)
+           {
+
+               var d=data.value;
+               /**
+                * Add each fetched post in the store.
+                */
+               /**
+                * Instantiate a new Post object.
+                */
+               const post=new Post();
+               post.id=d.id;
+               post.title=d.title;
+               post.userId=d.userId;
+               post.body=d.body;
+
+               /**
+                * Save this post in the store.
+                */
+               commit("ADD_POST",post);
+               console.log("loaded the single post..=>"+post.id);
+           }
+           else
+           {
+               console.log("Errorrr");
+               console.log(error.value);
+           }
+
        }
 
 

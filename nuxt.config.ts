@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 // @ts-ignore
 export default defineNuxtConfig({
+  ssr:true,
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
   app:{
