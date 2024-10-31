@@ -5,7 +5,7 @@
     </div>
 
     <!-- form for registering an account !-->
-    <form v-if="!login" action="" @submit.prevent="auth('register')">
+    <form v-if="!wantsToLogIn" action="" @submit.prevent="auth('register')">
       <h4 class="text-center">Register to Akieni now !</h4>
       <div class="form-group mb-2">
         <input v-model="user.name" type="text" class="form-control rounded-0" placeholder="Your name">
@@ -21,16 +21,16 @@
         <button type="submit" class="btn btn-primary rounded-0">Register</button>
       </div>
     </form>
-    <form v-else action="">
+    <form v-else action="" @submit.prevent="auth('login')">
       <h4 class="text-center">Login to Akieni now !</h4>
       <div class="form-group mb-2">
-        <input type="text" class="form-control rounded-0" placeholder="email">
+        <input v-model="email" type="text" class="form-control rounded-0" placeholder="email">
       </div>
       <div class="form-group mb-2">
-        <input type="password" class="form-control rounded-0" placeholder="password">
+        <input v-model="password" type="password" class="form-control rounded-0" placeholder="password">
       </div>
       <div class="form-group">
-        <button class="btn btn-primary rounded-0">Login</button>
+        <button class="btn btn-primary rounded-0" type="submit">Login</button>
       </div>
     </form>
   </div>
@@ -42,12 +42,19 @@ import User from "~/store/models/User";
 import useAccount from "~/composables/useAccount";
 import useNotification from "~/composables/useNotification";
 
-const login=ref(true);
+const {notify}=useNotification();
+
+const wantsToLogIn=ref(true);
 const confirmPass=ref('');
 const user:User=reactive(new User());
 const emit=defineEmits();
+/**
+ * States for user login
+ */
+const email=ref("");
+const password=ref("");
 
-const {registerAccount}=useAccount();
+const {registerAccount,login}=useAccount();
 
 const auth=async (authType:string)=>{
   if(authType==="register")
@@ -57,7 +64,7 @@ const auth=async (authType:string)=>{
      */
     if(user.password!==confirmPass.value)
     {
-      useNotification().display("Your passwords did not match","error");
+      notify("Your passwords did not match","error");
       return ;
     }
     await registerAccount(user);
@@ -65,7 +72,8 @@ const auth=async (authType:string)=>{
   }
   else
   {
-
+    await await login(email.value,password.value);
+    emit("auth");
   }
 };
 </script>

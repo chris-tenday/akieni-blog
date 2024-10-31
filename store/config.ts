@@ -69,22 +69,8 @@ export const mutations={
         }
     },
     STORE_COMMENT:(state,comment:Comment) => state.comments.push(comment),
-    SET_USER:(state:any,user:User|null) =>{
-
-        if(user!=null)
-        {
-            /**
-             * Store the user in session storage.
-             */
-            sessionStorage.setItem("user",user.toJSON());
-        }
-        else
-        {
-            /**
-             * Clear.
-             */
-            sessionStorage.removeItem("user");
-        }
+    SET_USER:(state:any,user:User) =>{
+        sessionStorage.setItem("user",user.toJSON()); /** save a copy in session storage for long persistence */
         state.user=user
-    }
+    },
 }

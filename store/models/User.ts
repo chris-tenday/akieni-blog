@@ -4,6 +4,7 @@ export default class User
     name:string;
     email:string;
     password:string
+    loggedIn:boolean /** used to determine whether the user is logged in or not */
 
     constructor()
     {
@@ -22,7 +23,8 @@ export default class User
             userId:this.userId,
             name:this.name,
             email:this.email,
-            password:this.password
+            password:this.password,
+            loggedIn:this.loggedIn
         });
     }
 
@@ -37,7 +39,7 @@ export default class User
         user.name=obj.name;
         user.email=obj.email;
         user.password=obj.password;
-
+        user.loggedIn=obj.loggedIn;
         return user;
     }
 

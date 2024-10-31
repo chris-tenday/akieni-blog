@@ -19,6 +19,7 @@ export default function(){
     };
 
     return {
+        notify:display,
         display
     }
 }
