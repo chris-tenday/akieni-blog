@@ -21,11 +21,22 @@ export default function()
              */
             await store.commit("SET_USER",user);
             useNotification().display("You've successfully register on Akieni !");
-        },5000);
+        },2000);
+    };
+
+    /**
+     * Method to logout .
+     */
+    const logout=()=>{
+        /**
+         * clear the user in store.
+         */
+        store.commit("SET_USER",null);
     };
 
 
     return {
-        registerAccount
+        registerAccount,
+        logout
     }
 }

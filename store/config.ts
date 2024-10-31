@@ -20,22 +20,19 @@ export const getters={
     GET_LASTPOSTID:(state:any) : number => (state.posts.length>0)? state.posts.at(-1).id : 0,
     GET_COMMENTS:(state:any) : Comment[] => state.comments,
     GET_USER:(state:any) : User|null =>{
-        if(state.user.length===0)
+        if(state.user===null || state.user.length===0)
         {
             if(process.client) /** this line of will only be executed on client-side environment */
             {
                 /**
                  * Get user data from session storage and loads it in the store for use.
                  */
-                if(state.user.length===0)
+                var json=sessionStorage.getItem("user");
+                if(json==undefined || json.length<1)
                 {
-                    var json=sessionStorage.getItem("user");
-                    if(json==undefined || json.length<1)
-                    {
-                        return null;
-                    }
-                    state.user=new User().fromJSON(json);
+                    return null;
                 }
+                state.user=new User().fromJSON(json);
 
             }
         }
@@ -72,11 +69,22 @@ export const mutations={
         }
     },
     STORE_COMMENT:(state,comment:Comment) => state.comments.push(comment),
-    SET_USER:(state:any,user:User) =>{
+    SET_USER:(state:any,user:User|null) =>{
+
+        if(user!=null)
+        {
+            /**
+             * Store the user in session storage.
+             */
+            sessionStorage.setItem("user",user.toJSON());
+        }
+        else
+        {
+            /**
+             * Clear.
+             */
+            sessionStorage.removeItem("user");
+        }
         state.user=user
-        /**
-         * Store the user in session storage.
-         */
-        sessionStorage.setItem("user",user.toJSON());
     }
 }

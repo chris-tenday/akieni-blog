@@ -17,7 +17,7 @@
               </li>
               <li class="nav-item">
                 <a v-if="user===undefined || user===null" class="nav-link" href="#" aria-current="page" data-bs-toggle="modal" data-bs-target="#login"><i class="fas fa-user"></i> Login</a>
-                <a v-else-if="user.email!==undefined" class="nav-link" style="color:blue;" href="#" ><i class="fa fa-user"></i> {{user.name}} [x]</a>
+                <a v-else-if="user.email!==undefined" class="nav-link" style="color:blue;" href="#" @click.prevent="logout"><i class="fa fa-user"></i> {{user.name}} [x]</a>
               </li>
             </ul>
           </div>
@@ -54,12 +54,15 @@ import Modal from "~/components/Modal.vue";
 import UserAccount from "~/components/UserAccount.vue";
 import PublishPost from "~/components/PublishPost.vue";
 import {useStore} from "vuex";
+import useAccount from "~/composables/useAccount.ts";
 export default {
   setup(){
     const store=useStore();
+    const {logout}=useAccount();
 
     return {
-      store
+      store,
+      logout
     }
   },
   name: "Header",
