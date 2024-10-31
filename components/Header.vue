@@ -16,8 +16,8 @@
                 <a class="nav-link active" href="#" aria-current="page" data-bs-toggle="modal" data-bs-target="#publish"><i class="fa fa-plus-circle"></i> Publish</a>
               </li>
               <li class="nav-item">
-                <a v-if="user===null" class="nav-link" href="#" aria-current="page" data-bs-toggle="modal" data-bs-target="#login"><i class="fas fa-user"></i> Login</a>
-                <a v-else class="nav-link" style="color:blue;" href="#" ><i class="fa fa-user"></i> {{user.name}} [x]</a>
+                <a v-if="user===undefined || user===null" class="nav-link" href="#" aria-current="page" data-bs-toggle="modal" data-bs-target="#login"><i class="fas fa-user"></i> Login</a>
+                <a v-else-if="user.email!==undefined" class="nav-link" style="color:blue;" href="#" ><i class="fa fa-user"></i> {{user.name}} [x]</a>
               </li>
             </ul>
           </div>
