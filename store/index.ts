@@ -53,11 +53,8 @@ const store=createStore({
         },
        async fetchPosts({commit,state},lastPostId:number)
        {
-           //console.log("scrolled fetching now..=>"+lastPostId);
            $fetch(`${state.baseUrl}/posts/get/${lastPostId}`)
                .then((data)=>{
-                    console.log("fetched data success...");
-                    console.log(data[0]);
                     for(let i=0; i<data.length; i++)
                     {
                         const post=new Post();
@@ -74,7 +71,7 @@ const store=createStore({
 
                })
                .catch((error)=>{
-                    console.log("error fetching...=>"+error.value);
+                    //console.log("error fetching...=>"+error.value);
                });
 
            //console.log(data.value);
