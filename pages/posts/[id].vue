@@ -34,13 +34,39 @@
 <script setup lang="ts">
 import useSinglePost from "~/composables/useSinglePost";
 import AddComment from "~/components/AddComment.vue";
+import {useRoute, useRouter} from "vue-router";
+import {ref} from "vue";
 
-const {post,fetchComments,comments}=useSinglePost();
+const {params}=useRoute()
+const router=useRouter()
+
+const postId=ref(Number(params.id));
+
+const {post,fetchComments,comments,loadPost}=useSinglePost(postId.value);
+
+if(post.value===null)
+{
+    /**
+     * Get the post.
+     */
+    try
+    {
+      await loadPost();
+    }
+    catch(error)
+    {
+      /***
+       * Redirect to 404 page.
+       */
+      router.push("/404");
+    }
+}
+
 
 /**
  * Get post comments from server.
  */
-await fetchComments();
+//await fetchComments();
 </script>
 
 <style scoped>

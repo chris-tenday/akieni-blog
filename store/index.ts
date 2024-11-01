@@ -13,44 +13,10 @@ const store=createStore({
    actions:
    {
        /**
-        * Action method used to fetch and intialize posts from server to the store.
+        * Method to intially posts.
         * @param commit
-        * @param lastPostId
+        * @param state
         */
-       async loadPosts_old({commit,state})
-       {
-            const {data,error}=await useFetch(`${state.baseUrl}/posts/fetch/0`);
-            if(error.value===null)
-            {
-
-                var d=data.value;
-                /**
-                 * Add each fetched post in the store.
-                 */
-                for(let i=0; i<data.value.length; i++)
-                {
-                    /**
-                     * Instantiate a new Post object.
-                     */
-                    const post=new Post();
-                    post.id=d[i].id;
-                    post.title=d[i].title;
-                    post.userId=d[i].userId;
-                    post.body=d[i].body;
-
-                    /**
-                     * Save this post in the store.
-                     */
-                    commit("ADD_POST",post);
-                }
-
-            }
-            else
-            {
-                console.log("Errorrr");
-                console.log(error.value);
-            }
-        },
        async loadPosts({commit,state})
        {
            try
@@ -74,6 +40,12 @@ const store=createStore({
                throw error;
            }
        },
+       /**
+        * Method to fetch more posts and store them in the store.
+        * @param commit
+        * @param state
+        * @param lastPostId => the last post ID that was fetched from server.
+        */
        async fetchPosts({commit,state},lastPostId:number)
        {
            try
@@ -217,7 +189,7 @@ const store=createStore({
                console.log(error.value);
            }
        },
-       async getPost({commit,state},postId:number)
+       async getPost_old({commit,state},postId:number)
        {
            console.log("loading single post..=>"+postId);
            const {data,error}=await useFetch(`${state.baseUrl}/posts/get/${postId}`);
@@ -249,6 +221,33 @@ const store=createStore({
                console.log("Errorrr");
                console.log(error.value);
            }
+
+       },
+       async getPost({commit,state},postId:number)
+       {
+           try
+           {
+               const data=await $fetch(`${state.baseUrl}/posts/get/${postId}`);
+               if(data.length===0)
+               {
+                   throw new Error("Post not found");
+               }
+               /**
+                * Store this post in the store.
+                */
+               const post=new Post();
+               post.id=data.id;
+               post.title=data.title;
+               post.userId=data.userId;
+               post.body=data.body;
+
+               commit("ADD_POST",post);
+           }
+           catch(error)
+           {
+               throw error;
+           }
+
 
        }
 
