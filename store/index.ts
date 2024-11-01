@@ -115,7 +115,7 @@ const store=createStore({
                    body:{
                        title:post.title,
                        body:post.body,
-                       userId:1 //TODO:Replace this ID with the connected user ID.
+                       userId:post.userId
                    }
                });
 

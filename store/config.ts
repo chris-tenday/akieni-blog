@@ -8,7 +8,7 @@ import {useRuntimeConfig} from "nuxt/app";
 
 export const states={
     posts:[] as Post[],
-    baseUrl:"http://127.0.0.1:8000/api", //TODO:Migrate this in a .env file
+    baseUrl:"http://127.0.0.1:8000/api",
     comments:[] as Comment[],
     user:User
 }
