@@ -36,12 +36,14 @@ import RestrictedFeature from "~/components/RestrictedFeature.vue";
 import {useStore} from "vuex";
 import User from "~/store/models/User";
 import useNotification from "~/composables/useNotification";
+import {useRouter} from "vue-router";
 
 const title=ref("");
 const body=ref("");
 const loading=ref(false);
 
 const store=useStore();
+const router=useRouter();
 const {notify}=useNotification();
 const {publishPost}=usePublishPost();
 
@@ -63,6 +65,11 @@ const publish=async ()=>{
     title.value="";
     body.value="";
     loading.value=false;
+
+    /**
+     * Go the published post.
+     */
+    router.push("/#"+post.id);
   }
   catch(error)
   {

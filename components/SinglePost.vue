@@ -1,5 +1,5 @@
 <template>
-  <div class="col-md-12 bg-color rounded-3 p-3 mb-3" style="">
+  <div :id="post.id" class="col-md-12 bg-color rounded-3 p-3 mb-3" style="">
     <small><i class="fa fa-calendar-alt"></i> 10/02/2024</small>
     <img src="/assets/img/img1.webp" alt="" class="img-fluid rounded-3">
     <h3>{{ post.title }}</h3>
