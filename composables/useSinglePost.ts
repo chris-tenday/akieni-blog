@@ -1,8 +1,6 @@
 import {useStore} from "vuex";
-import {useRoute} from "vue-router";
 import Post from "~/store/models/Post";
-import {computed, ComputedRef, ref} from "vue";
-import User from "~/store/models/User";
+import {computed, ComputedRef} from "vue";
 
 export default function(postId:number)
 {
@@ -10,11 +8,6 @@ export default function(postId:number)
      * Store.
      */
     const store=useStore();
-    /**
-     * Route.
-     */
-    const {params}=useRoute();
-
     /**
      * Post to view.
      */
@@ -32,50 +25,25 @@ export default function(postId:number)
     });
 
     /**
-     * Comments.
-     */
-    const comments:ComputedRef<Comment[]>=computed<Comment[]>(()=>{
-        var com=store.getters.GET_COMMENTS;
-        return com.filter(comment => comment.postId === postId);
-    });
-
-    /**
      * Method get the post to view from the server.
      */
     const loadPost=async ()=>{
-        /**
-         * First the post first.
-         */
-        console.log("Post is not there");
         try
         {
             await store.dispatch("getPost",postId);
         }
         catch(error)
         {
+            /**
+             * Post not found.
+             */
             throw new Error("404");
         }
     };
 
-    const fetchComments=async ()=>{
-
-        await store.dispatch("getComments",postId);
-    };
-
-
-    const addComment=(comment:Comment)=>{
-        const user:User=store.getters.GET_USER;
-        comment.name=user.name;
-        comment.email=user.email;
-        store.dispatch("addComment",comment);
-        //TODO:clear input after commented successfully
-    }
 
     return {
         post,
-        fetchComments,
-        comments,
-        addComment,
         loadPost
     };
 }

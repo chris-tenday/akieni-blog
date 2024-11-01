@@ -36,13 +36,15 @@ import useSinglePost from "~/composables/useSinglePost";
 import AddComment from "~/components/AddComment.vue";
 import {useRoute, useRouter} from "vue-router";
 import {ref} from "vue";
+import useComments from "~/composables/useComments";
 
 const {params}=useRoute()
 const router=useRouter()
 
 const postId=ref(Number(params.id));
 
-const {post,fetchComments,comments,loadPost}=useSinglePost(postId.value);
+const {post,loadPost}=useSinglePost(postId.value);
+const {comments,fetchComments}=useComments(postId.value);
 
 if(post.value===null)
 {
