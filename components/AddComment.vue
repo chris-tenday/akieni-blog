@@ -25,7 +25,8 @@ import useNotification from "~/composables/useNotification";
 const userComment=ref("");
 const props=defineProps({
   postId:{
-    type:Number
+    type:Number,
+    required:true
   }
 });
 

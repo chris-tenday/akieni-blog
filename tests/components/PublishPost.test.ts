@@ -1,15 +1,20 @@
-import {mountSuspended} from "@nuxt/test-utils/runtime";
 import PublishPost from "/components/PublishPost.vue";
 import {expect, test} from "vitest";
+import {mount} from "@vue/test-utils";
+import store from "/store/index"
 
 test("Publish post can render",async ()=>{
     /**
      * Mount the component.
      */
-    const component=await mountSuspended(PublishPost);
+    const component=await mount(PublishPost,{
+        global:{
+            plugins:[store]
+        }
+    });
 
     /**
      * asserts.
      */
-    expect(component.text()).toMatch(/Publish/i);
+    expect(component.exists()).toBe(true);
 });

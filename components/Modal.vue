@@ -28,7 +28,6 @@ export default {
       /**
        * Close the modal
        */
-      console.log("heyy closing...");
       document.getElementById("closeBtn").click();
     }
   }

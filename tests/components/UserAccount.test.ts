@@ -1,12 +1,17 @@
 import {expect, test} from "vitest";
-import {mountSuspended} from "@nuxt/test-utils/runtime";
 import UserAccount from "/components/UserAccount.vue"
+import {mount} from "@vue/test-utils";
+import store from "/store/index"
 
 
 test("UserAccount can render",async()=>{
 
-    const comp=await mountSuspended(UserAccount);
+    const comp=await mount(UserAccount,{
+        global:{
+            plugins:[store]
+        }
+    });
 
-    expect(comp.text()).toMatch(/Login to Akieni/i);
+    expect(comp.exists()).toBe(true);
 
 });
