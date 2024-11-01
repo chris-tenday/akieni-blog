@@ -12,10 +12,16 @@ export default function()
      * @param user
      */
     const registerAccount=(user:User)=>{
-                                //"^[a-zA-Z0-9_.-]{1,}@/" //TODO: Validate the user email.
-        //TODO:Validate the user password.
-        /** simulate a wait time */
+        /**
+         * Validate user email.
+         */
+        var pattern=/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if(pattern.test(user.email) ===false)
+        {
+            throw new Error("Email invalid.");
+        }
 
+        /** simulate a wait time */
         setTimeout(async ()=>{
             /**
              * Store the user in the store.

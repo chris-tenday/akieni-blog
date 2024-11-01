@@ -1,7 +1,7 @@
 <template>
   <div class="mb-2 mt-2">
     <div class="mb-2">
-      <a href="" @click.prevent="login=true">Login</a> / <a href="" @click.prevent="login=false">Register</a>
+      <a href="" @click.prevent="wantsToLogIn=true">Login</a> / <a href="" @click.prevent="wantsToLogIn=false">Register</a>
     </div>
 
     <!-- form for registering an account !-->
@@ -67,8 +67,18 @@ const auth=async (authType:string)=>{
       notify("Your passwords did not match","error");
       return ;
     }
-    await registerAccount(user);
-    emit("auth"); /** emit the auth to alert the parent component that the auth is finished.*/
+    try
+    {
+      await registerAccount(user);
+      emit("auth"); /** emit the auth to alert the parent component that the auth is finished.*/
+    }
+    catch(error)
+    {
+      /**
+       * Display the error.
+       */
+      notify(error.message,"error");
+    }
   }
   else
   {
