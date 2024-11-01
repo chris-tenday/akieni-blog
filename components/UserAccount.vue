@@ -59,31 +59,52 @@ const {registerAccount,login}=useAccount();
 const auth=async (authType:string)=>{
   if(authType==="register")
   {
-    /**
-     * Perform a register.
-     */
-    if(user.password!==confirmPass.value)
-    {
-      notify("Your passwords did not match","error");
-      return ;
-    }
-    try
-    {
-      await registerAccount(user);
-      emit("auth"); /** emit the auth to alert the parent component that the auth is finished.*/
-    }
-    catch(error)
-    {
       /**
-       * Display the error.
+       * Perform a register.
        */
-      notify(error.message,"error");
-    }
+      if(user.password!==confirmPass.value)
+      {
+        notify("Your passwords did not match","error");
+        return ;
+      }
+      try
+      {
+        await registerAccount(user);
+        emit("auth"); /** emit the auth to alert the parent component that the auth is finished.*/
+      }
+      catch(error)
+      {
+        /**
+         * Display the error.
+         */
+        notify(error.message,"error");
+      }
   }
   else
   {
-    await await login(email.value,password.value);
-    emit("auth");
+    var response=await await login(email.value,password.value);
+
+    if(response)
+    {
+      /**
+       * Emit this event so to alert the parent component that the authentification has been successfull
+       */
+        emit("auth");
+      /**
+       * Clear.
+       */
+      email.value="";
+      password.value="";
+    }
+    else
+    {
+      /**
+       * Failed.
+       */
+      notify("Email or password incorrect !","error");
+    }
+
+
   }
 };
 </script>

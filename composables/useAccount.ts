@@ -15,11 +15,7 @@ export default function()
         /**
          * Validate user email.
          */
-        var pattern=/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        if(pattern.test(user.email) ===false)
-        {
-            throw new Error("Email invalid.");
-        }
+        isEmailValid(user.email);
 
         /** simulate a wait time */
         setTimeout(async ()=>{
@@ -31,6 +27,19 @@ export default function()
             notify("You've successfully register on Akieni !");
         },2000);
     };
+
+    /**
+     * Function to regex validate an email address
+     * @throws an exception when email invalid.
+     * @param email
+     */
+    const isEmailValid=(email)=>{
+        var pattern=/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if(!pattern.test(email))
+        {
+            throw new Error("Email invalid.");
+        }
+    }
 
     /**
      * Method to logout .
@@ -48,26 +57,17 @@ export default function()
      */
     const login=(email:string,password:string)=>{
         const user:User|null=store.getters.GET_USER;
-        if(user===null)
+        if(user!==null && user.email===email && user.password===password)
         {
-            notify("Email or Password incorrect!","danger");
+            /**
+             * Mark the use as logged In and update the store.
+             */
+            user.loggedIn=true;
+            store.commit("SET_USER",user);
+            return true;
         }
-        else
-        {
-            if(user.email===email && user.password===password)
-            {
-                /**
-                 * Mark the use as logged In and update the store.
-                 */
-                user.loggedIn=true;
-                store.commit("SET_USER",user);
-            }
-            else
-            {
-                notify("Email or Password incorrect!","error");
-            }
 
-        }
+        return false;
     }
 
 
