@@ -77,26 +77,28 @@ const store=createStore({
         */
        async getComments({commit,state},postId:number)
        {
-           console.log("id:"+postId);
-           const {data,error}=await useFetch(`${state.baseUrl}/comments/get/${postId}`);
-           if(error.value===null)
+           try
            {
-               var d=data.value
-               for(let i=0; i<d.length; i++)
-               {
+               const data=await $fetch(`${state.baseUrl}/comments/get/${postId}`);
+               data.map((d)=>{
                    const comment=new Comment();
-                   comment.id=d[i].id;
-                   comment.postId=postId;
-                   comment.name=d[i].name;
-                   comment.email=d[i].email;
-                   comment.body=d[i].body;
+                   comment.id=d.id;
+                   comment.postId=d.postId;
+                   comment.name=d.name;
+                   comment.email=d.email;
+                   comment.body=d.body;
+
+                   /**
+                    * Store each comment in the store.
+                    */
                    commit("STORE_COMMENT",comment);
-               }
+               });
            }
-           else
+           catch(error)
            {
-               console.log("Error while getting post comments... =>"+error.value);
+               throw error;
            }
+
        },
        /**
         * Method to publish a post.

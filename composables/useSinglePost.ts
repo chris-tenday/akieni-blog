@@ -82,16 +82,8 @@ export default function(postId:number) //TODO: Validate this route param, it sho
     };
 
     const fetchComments=async ()=>{
-        /**
-         * If the post data is already available ,no need to fetch it again from server.
-         */
-        if(post.value===null)
-        {
 
-        }
-        console.log("fetch comment=>");
-
-        //await store.dispatch("getComments",postId.value);
+        await store.dispatch("getComments",postId);
     };
 
 

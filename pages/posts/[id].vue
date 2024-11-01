@@ -66,7 +66,7 @@ if(post.value===null)
 /**
  * Get post comments from server.
  */
-//await fetchComments();
+await fetchComments();
 </script>
 
 <style scoped>
