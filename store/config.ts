@@ -4,6 +4,7 @@
 import Post from "~/store/models/Post";
 import Comment from "~/store/models/Comment";
 import User from "~/store/models/User";
+import {useRuntimeConfig} from "nuxt/app";
 
 export const states={
     posts:[] as Post[],
@@ -55,27 +56,6 @@ export const getters={
 export const mutations={
     SET_POSTS:(state:any,posts:Post[]) => state.posts=posts, /** initial posts loaded in the store */
     ADD_POST:(state:any,post:Post) => state.posts.push(post) /** add a post in the store */,
-    SET_COMMENTS_old:function(state:any,postId:number,comments:Comment[]){
-        /**
-         * Add the comments of a post in the store.
-         */
-        console.log("setting commments...=>"+state.posts.length);
-        for(let i=0; i<state.posts.length; i++) //TODO:Improve this data searching algorithm.
-        {
-            console.log("match => "+i);
-            if(state.posts[i].id==postId)
-            {
-                console.log("match found:"+state.posts[i].id);
-                state.posts[i].comments=comments;
-                console.log("CL:"+state.posts[i].title);
-                break;
-            }
-            else
-            {
-
-            }
-        }
-    },
     STORE_COMMENT:(state,comment:Comment) => state.comments.push(comment),
     SET_USER:(state:any,user:User) =>{
         sessionStorage.setItem("user",user.toJSON()); /** save a copy in session storage for long persistence */

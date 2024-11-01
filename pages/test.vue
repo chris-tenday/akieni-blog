@@ -4,28 +4,19 @@
   </div>
 </template>
 
-<script>
-import {useStore} from "vuex";
+<script setup lang="ts">
 
-export default {
-  name: "test",
-  setup(){
-    if(process.server)
-    {
-      const store =useStore();
-      console.log("on setup from server =>"+store.state.baseUrl)
+import {useRuntimeConfig} from "nuxt/app";
+import {onMounted} from "vue";
 
-    }
 
-    if(process.client)
-    {
-      console.log("on setup from client")
-    }
-  },
-  mounted() {
-    console.log("Page mounted...");
-  }
-}
+console.log("API URL =>"+process.env.NUXT_PUBLIC_API_URL);
+console.log("NUXT URL=>"+useRuntimeConfig().public.API_URL);
+
+onMounted(()=>{
+  console.log("Page is mounted");
+
+});
 </script>
 
 <style scoped>

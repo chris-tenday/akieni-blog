@@ -106,32 +106,39 @@ const store=createStore({
         * @param state
         * @param post
         */
-       publishPost({commit,state},post:Post)
+       async publishPost({commit,state},post:Post)
        {
-           $fetch(`${state.baseUrl}/posts/publish`,{
-               method:"POST",
-               body:{
-                   title:post.title,
-                   body:post.body,
-                   userId:1 //TODO:Replace this ID with the connected user ID.
-               }
-           })
-               .then((data)=>{
-                   /**
-                    * Complete the post object with the ID.
-                    */
-                   post.id=data.id;
-
-                   /**
-                    * Store this new post in the store.
-                    */
-                   commit("ADD_POST",post);
-                   callback(post.id);
-
-               })
-               .catch((error)=>{
-                   console.log("Error while publishing post.");
+           try
+           {
+               const response=await $fetch(`${state.baseUrl}/posts/publish`,{
+                   method:"POST",
+                   body:{
+                       title:post.title,
+                       body:post.body,
+                       userId:1 //TODO:Replace this ID with the connected user ID.
+                   }
                });
+
+               if(response.status!=="success")
+               {
+                   throw new Error("Couldn't publish your post.");
+               }
+
+               /**
+                * Complete the post object with the ID.
+                */
+               post.id=response.id;
+
+               /**
+                * Store this new post in the store.
+                */
+               commit("ADD_POST",post);
+
+           }
+           catch(error)
+           {
+               throw error;
+           }
        },
 
        async addComment({commit,state},comment:Comment)
