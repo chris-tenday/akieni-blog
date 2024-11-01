@@ -2,8 +2,9 @@ import {useStore} from "vuex";
 import {useRoute} from "vue-router";
 import Post from "~/store/models/Post";
 import {computed, ComputedRef, ref} from "vue";
+import User from "~/store/models/User";
 
-export default function(postId:number) //TODO: Validate this route param, it should be a valid number.
+export default function(postId:number)
 {
     /**
      * Store.
@@ -35,15 +36,7 @@ export default function(postId:number) //TODO: Validate this route param, it sho
      */
     const comments:ComputedRef<Comment[]>=computed<Comment[]>(()=>{
         var com=store.getters.GET_COMMENTS;
-        var data:Comment[]=[];
-        for(let i=0; i<com.length; i++) //TODO:Improve this data searching algorithm.
-        {
-            if(com[i].postId===postId)
-            {
-                data.push(com[i]);
-            }
-        }
-        return data;
+        return com.filter(comment => comment.postId === postId);
     });
 
     const fetchComments_old=async ()=>{
@@ -88,8 +81,9 @@ export default function(postId:number) //TODO: Validate this route param, it sho
 
 
     const addComment=(comment:Comment)=>{
-        comment.name="Chris Tenday"; //TODO:Replace with the data of the connected user.
-        comment.email="tenday@gmail.com"; //TODO:Replace with the data of the connected user.
+        const user:User=store.getters.GET_USER;
+        comment.name=user.name; //TODO:Replace with the data of the connected user.
+        comment.email=user.email; //TODO:Replace with the data of the connected user.
         store.dispatch("addComment",comment);
         //TODO:clear input after commented successfully
     }
