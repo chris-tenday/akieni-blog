@@ -6,6 +6,4 @@ export default class Post
     userId:number;
     title:string;
     body:string;
-    comments:Comment[]=[];
-
 }
