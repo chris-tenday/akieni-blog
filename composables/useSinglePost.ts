@@ -65,8 +65,8 @@ export default function(postId:number)
 
     const addComment=(comment:Comment)=>{
         const user:User=store.getters.GET_USER;
-        comment.name=user.name; //TODO:Replace with the data of the connected user.
-        comment.email=user.email; //TODO:Replace with the data of the connected user.
+        comment.name=user.name;
+        comment.email=user.email;
         store.dispatch("addComment",comment);
         //TODO:clear input after commented successfully
     }

@@ -134,10 +134,12 @@ const store=createStore({
                });
        },
 
-       addComment({commit,state},comment:Comment)
+       async addComment({commit,state},comment:Comment)
        {
-           $fetch(`${state.baseUrl}/comments/add`,
-               {
+           try
+           {
+               const response=await $fetch(`${state.baseUrl}/comments/add`,
+                   {
                        method:"POST",
                        body:{
                            postId:comment.postId,
@@ -145,85 +147,23 @@ const store=createStore({
                            email:comment.email,
                            body:comment.body
 
-                    }
-           })
-               .then((data)=>{
-                   comment.id=data.id;
-                   /**
-                    * Store the comment in the store.
-                    */
-                   commit("STORE_COMMENT",comment);
-               })
-               .catch((error)=>{
+                       }
+                   })
 
-               });
-       },
-       async getPost_old({commit,state},postId:number)
-       {
-           console.log("loading single post..=>"+postId);
-           const {data,error}=await useFetch(`${state.baseUrl}/posts/get/${postId}`);
-           console.log(data.value);
-           if(error.value===null)
-           {
-
-               var d=data.value;
+               if(response.status!=="success")
+               {
+                   throw new Error("Something bad happened, try commenting later!");
+               }
+               comment.id=response.id;
                /**
-                * Add each fetched post in the store.
+                * Store the comment in the store.
                 */
-               /**
-                * Instantiate a new Post object.
-                */
-               const post=new Post();
-               post.id=d.id;
-               post.title=d.title;
-               post.userId=d.userId;
-               post.body=d.body;
-
-               /**
-                * Save this post in the store.
-                */
-               commit("ADD_POST",post);
-               console.log("loaded the single post..=>"+post.title);
+               commit("STORE_COMMENT",comment);
            }
-           else
+           catch(error)
            {
-               console.log("Errorrr");
-               console.log(error.value);
+               throw error;
            }
-       },
-       async getPost_old({commit,state},postId:number)
-       {
-           console.log("loading single post..=>"+postId);
-           const {data,error}=await useFetch(`${state.baseUrl}/posts/get/${postId}`);
-           console.log(data.value);
-           if(error.value===null)
-           {
-
-               var d=data.value;
-               /**
-                * Add each fetched post in the store.
-                */
-               /**
-                * Instantiate a new Post object.
-                */
-               const post=new Post();
-               post.id=d.id;
-               post.title=d.title;
-               post.userId=d.userId;
-               post.body=d.body;
-
-               /**
-                * Save this post in the store.
-                */
-               commit("ADD_POST",post);
-               console.log("loaded the single post..=>"+post.id);
-           }
-           else
-           {
-               console.log("Errorrr");
-               console.log(error.value);
-           }
-
        },
        async getPost({commit,state},postId:number)
        {
