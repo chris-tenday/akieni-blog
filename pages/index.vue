@@ -9,14 +9,17 @@
 
           <PublishPost/>
 
-          <div v-if="!dataLoadingError" class="row">
-            <small>Recents posts</small>
-            <SinglePost v-for="post in posts" :post="post"/>
-            <Loader/>
-          </div>
-          <div v-else class="row">
+          <small>Recents posts</small>
+          <SinglePost v-for="post in posts" :post="post"/>
+          <Loader v-if="loading"/>
+          <div v-if="errorMsg.length>0" class="row">
             <div class="col-md-12 d-flex justify-content-center">
-              <p style="color: red;"><i class="fa fa-warning" ></i> We're very sorry , we couldn't load data Please try reloading the page !</p>
+              <p style="color: red;"><i class="fa fa-warning"></i> {{errorMsg}}</p>
+            </div>
+          </div>
+          <div v-if="fetchError.length>0" class="row">
+            <div class="col-md-12 d-flex justify-content-center">
+              <p style="color: red;"><i class="fa fa-warning"></i> {{fetchError}}</p>
             </div>
           </div>
         </div>
@@ -40,8 +43,9 @@ import Loader from "~/components/Loader.vue";
  * Used to notify the user when an error occured at server-side level
  */
 const dataLoadingError=ref(false);
+const errorMsg=ref("");
 
-const {posts,scrolling,loadPosts,loading}=usePosts();
+const {posts,scrolling,loadPosts,loading,fetchError}=usePosts();
 
 try
 {
@@ -49,7 +53,7 @@ try
 }
 catch(error)
 {
-  dataLoadingError.value=true;
+  errorMsg.value=error.message;
 }
 
 onMounted(()=>{

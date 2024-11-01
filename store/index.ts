@@ -61,7 +61,7 @@ const store=createStore({
                     * Add each post into the store.
                     */
                    const post=new Post();
-                   post.id=data.id;
+                   post.id=d.id;
                    post.title=d.title;
                    post.userId=d.userId;
                    post.body=d.body
@@ -76,29 +76,26 @@ const store=createStore({
        },
        async fetchPosts({commit,state},lastPostId:number)
        {
-           $fetch(`${state.baseUrl}/posts/fetch/${lastPostId}`)
-               .then((data)=>{
-                    for(let i=0; i<data.length; i++)
-                    {
-                        const post=new Post();
-                        post.id=data[i].id;
-                        post.title=data[i].title
-                        post.body=data[i].body;
-                        post.userId=data[i].userId;
+           try
+           {
+               const data=await $fetch(`${state.baseUrl}/posts/fetch/${lastPostId}`);
+               data.map((d)=>{
+                   /**
+                    * Add each fetched post in the store.
+                    */
+                   const post=new Post();
+                   post.userId=d.userId;
+                   post.title=d.title;
+                   post.body=d.body;
+                   post.id=d.id;
 
-                        /**
-                         * Add this post to the store.
-                         */
-                        commit("ADD_POST",post);
-                    }
-
-               })
-               .catch((error)=>{
-                    //console.log("error fetching...=>"+error.value);
+                   commit("ADD_POST",post);
                });
-
-           //console.log(data.value);
-
+           }
+           catch(error)
+           {
+               throw error;
+           }
        },
        /**
         * Method to get comments of a post.

@@ -17,7 +17,15 @@ export const states={
  */
 export const getters={
     GET_POSTS: (state:any) : Post[] => state.posts /** get posts from the store */,
-    GET_LASTPOSTID:(state:any) : number => (state.posts.length>0)? state.posts.at(-1).id : 0,
+    GET_LASTPOSTID:(state:any) : number =>{
+        let length=state.posts.length
+        if(length>0)
+        {
+            return state.posts[length-1].id;
+        }
+
+        return 0;
+    } ,
     GET_COMMENTS:(state:any) : Comment[] => state.comments,
     GET_USER:(state:any) : User|null =>{
         if(state.user===null || state.user.length===0)

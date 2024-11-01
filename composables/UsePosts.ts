@@ -28,7 +28,21 @@ export default function usePosts()
      * State to control the display of the loader view/icon ,when asynchronously loading data.
      */
     const loading=ref(false);
+    const fetchError=ref("");
 
+    /**
+     * Last post store in the store.
+     */
+    const lastPost:ComputedRef<Post | null>=computed(()=>{
+        const posts: Post[] = store.getters.GET_POSTS;
+
+        if (posts.length > 0)
+        {
+            return posts[posts.length - 1]; // Get the last post
+        }
+
+        return null;
+    });
 
     /**
      * Function for fetching and loading posts into the store.
@@ -44,7 +58,7 @@ export default function usePosts()
             /**
              * Pass the error caught to the page component.
              */
-            throw error;
+            throw new Error("There was an error , please try reloading the page.");
         }
     }
 
@@ -54,11 +68,17 @@ export default function usePosts()
      */
     const fetchPosts=async () =>{
         loading.value=true;
-        const id:number = store.getters.GET_LASTPOSTID; /** get last post ID on the store. */
-
-        store.dispatch("fetchPosts",id).then(()=>{
-            loading.value=false;
-        });
+        const id:number = lastPost.value.id; /** get last post ID on the store. */
+        console.log("ID:"+id);
+        try
+        {
+            await store.dispatch("fetchPosts",id);
+        }
+        catch(error)
+        {
+            fetchError.value="We couldn't fetch more posts , check your internet connection.";
+        }
+        loading.value=false;
 
 
     };
@@ -91,6 +111,7 @@ export default function usePosts()
         loadPosts,
         posts:store.getters.GET_POSTS,
         scrolling,
-        loading
+        loading,
+        fetchError
     }
 }
