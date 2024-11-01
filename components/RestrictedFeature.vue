@@ -5,7 +5,7 @@
         <div >
           <slot></slot>
         </div>
-        <div :class="`overlay ${isUserConnected}`" id="overlay">
+        <div v-if="!isUserConnected" class="overlay show" id="overlay">
           <div>
             <a href="#" aria-current="page" data-bs-toggle="modal" data-bs-target="#login" class="btn btn-warning rounded-0"><i class="fa fa-lock"></i> Login</a>
           </div>
@@ -16,32 +16,22 @@
   </div>
 </template>
 
-<script>
+<script setup lang="ts">
 import {useStore} from "vuex";
 import User from "~/store/models/User";
+import {computed, ComputedRef} from "vue";
 
-export default {
-  name: "RestrictedFeature",
-  setup(){
-    const store=useStore();
+const store=useStore();
 
-    return{
-      store
-    }
-  },
-  computed:{
-    isUserConnected()
-    {
-      let user=this.store.getters.GET_USER;
-      if(user!==null && user.loggedIn)
-      {
-        return 'hide';
-      }
+/**
+ * Show or hide the feature depending on whether the user is connected or not.
+ */
+const isUserConnected:ComputedRef<boolean>=computed(()=>{
+  const user:User=store.getters.GET_USER;
 
-      return 'show';
-    }
-  }
-}
+  return (user!==null && user.loggedIn)? true : false;
+});
+
 </script>
 
 <style scoped>

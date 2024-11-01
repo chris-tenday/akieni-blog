@@ -39,23 +39,6 @@ export default function(postId:number)
         return com.filter(comment => comment.postId === postId);
     });
 
-    const fetchComments_old=async ()=>{
-        /**
-         * If the post data is already available ,no need to fetch it again from server.
-         */
-        console.log("fetch comment=>"+post.value?.title)
-        if(post.value==null)
-        {
-            console.log("post is null");
-            /**
-             * Fetch the post data.
-             */
-            await store.dispatch("getPost",postId.value);
-        }
-
-        //await store.dispatch("getComments",postId.value);
-    };
-
     /**
      * Method get the post to view from the server.
      */
