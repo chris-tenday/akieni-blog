@@ -17,7 +17,7 @@ const store=createStore({
         * @param commit
         * @param lastPostId
         */
-       async loadPosts({commit,state})
+       async loadPosts_old({commit,state})
        {
             const {data,error}=await useFetch(`${state.baseUrl}/posts/fetch/0`);
             if(error.value===null)
@@ -51,6 +51,29 @@ const store=createStore({
                 console.log(error.value);
             }
         },
+       async loadPosts({commit,state})
+       {
+           try
+           {
+               const data=await $fetch(`${state.baseUrl}/posts/fetch/0`);
+               data.map((d)=>{
+                   /**
+                    * Add each post into the store.
+                    */
+                   const post=new Post();
+                   post.id=data.id;
+                   post.title=d.title;
+                   post.userId=d.userId;
+                   post.body=d.body
+
+                   commit("ADD_POST",post);
+               });
+           }
+           catch (error)
+           {
+               throw error;
+           }
+       },
        async fetchPosts({commit,state},lastPostId:number)
        {
            $fetch(`${state.baseUrl}/posts/fetch/${lastPostId}`)

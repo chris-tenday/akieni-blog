@@ -33,9 +33,19 @@ export default function usePosts()
     /**
      * Function for fetching and loading posts into the store.
      */
-    const initializeStore=async ()=>{
+    const loadPosts=async ()=>{
 
-        await store.dispatch("loadPosts");
+        try
+        {
+            await store.dispatch("loadPosts");
+        }
+        catch(error)
+        {
+            /**
+             * Pass the error caught to the page component.
+             */
+            throw error;
+        }
     }
 
 
@@ -78,7 +88,7 @@ export default function usePosts()
      * Return these properties for use by caller.
      */
     return {
-        initializeStore,
+        loadPosts,
         posts:store.getters.GET_POSTS,
         scrolling,
         loading
