@@ -1,7 +1,7 @@
 import {mount} from "@vue/test-utils";
 import {expect, test} from "vitest";
 import index from "/pages/index.vue"
-import {mountSuspended} from "@nuxt/test-utils/runtime";
+import {mountSuspended, registerEndpoint} from "@nuxt/test-utils/runtime";
 import store from "/store/index";
 
 

@@ -13,7 +13,15 @@ export default function()
      * @param post
      */
     const publishPost=async (post:Post)=>{
-        await store.dispatch("publishPost",post);
+        try
+        {
+            return await store.dispatch("publishNewPost",post);
+
+        }
+        catch(error)
+        {
+            throw new Error("Error publishing your post.");
+        }
     }
 
     return {

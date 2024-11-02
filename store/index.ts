@@ -31,6 +31,7 @@ const store=createStore({
                    post.title=d.title;
                    post.userId=d.userId;
                    post.body=d.body
+                   post.author=d.author;
 
                    commit("ADD_POST",post);
                });
@@ -60,6 +61,7 @@ const store=createStore({
                    post.title=d.title;
                    post.body=d.body;
                    post.id=d.id;
+                   post.author=d.author;
 
                    commit("ADD_POST",post);
                });
@@ -106,7 +108,7 @@ const store=createStore({
         * @param state
         * @param post
         */
-       async publishPost({commit,state},post:Post)
+       async publishNewPost({commit,state},post:Post)
        {
            try
            {
@@ -121,7 +123,7 @@ const store=createStore({
 
                if(response.status!=="success")
                {
-                   throw new Error("Couldn't publish your post.");
+                   return response.status;
                }
 
                /**
@@ -133,6 +135,8 @@ const store=createStore({
                 * Store this new post in the store.
                 */
                commit("ADD_POST",post);
+
+               return true;
 
            }
            catch(error)

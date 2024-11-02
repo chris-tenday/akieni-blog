@@ -6,4 +6,5 @@ export default class Post
     userId:number;
     title:string;
     body:string;
+    author:string;
 }

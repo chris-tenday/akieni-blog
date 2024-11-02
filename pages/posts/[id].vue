@@ -7,7 +7,7 @@
         </div>
         <div class="col-md-5">
           <h5>{{post.title}}</h5>
-          <small><i class="fa fa-calendar-alt"></i> 10/02/2024 :{{post.id}}</small>
+          <p style="font-weight: bold;"><i class="fa fa-user-circle"></i> {{post.author}}</p>
           <div style="overflow-y: auto; max-height:350px;">
             <p>{{post.body}}</p>
 

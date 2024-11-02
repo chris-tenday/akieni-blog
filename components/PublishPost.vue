@@ -7,21 +7,21 @@
         <RestrictedFeature >
           <form action="#" @submit.prevent="publish">
             <div class="form-group mb-2">
-              <input v-model="title" type="text" class="form-control rounded-0" placeholder="Write the title of your post" :disabled=loading>
+              <input id="title" v-model="title" type="text" class="form-control rounded-0" placeholder="Write the title of your post" :disabled=loading>
             </div>
             <div class="form-group mb-2">
-              <textarea :disabled=loading v-model="body" name="" id="" style="min-height: 50px;" class="form-control rounded-0" placeholder="Write your thoughts here.."></textarea>
+              <textarea  :disabled=loading v-model="body" name="" id="body" style="min-height: 50px;" class="form-control rounded-0" placeholder="Write your thoughts here.."></textarea>
             </div>
             <div class="form-inline">
               <div class="form-group">
                 <a href="#" class="btn btn-primary rounded-0 me-2"><i class="fa fa-file-image"></i> Attach image</a>
-                <button :disabled=loading type="submit" class="btn rounded-0" style="border:1px solid black;"><i class="fas fa-plus-circle"></i> Publish</button>
+                <button id="submitBtn" :disabled=loading type="submit" class="btn rounded-0" style="border:1px solid black;"><i class="fas fa-plus-circle"></i> Publish</button>
+
               </div>
             </div>
 
           </form>
         </RestrictedFeature>
-
       </div>
     </div>
   </div>
@@ -53,27 +53,35 @@ const publish=async ()=>{
   post.body=body.value;
   const user:User=store.getters.GET_USER;
   post.userId=user.userId;
-
   try
   {
     loading.value=true;
-    await publishPost(post);
-    notify("Your post is successfully","success");
-    /**
-     * Clear.
-     */
-    title.value="";
-    body.value="";
-    loading.value=false;
+    const response=await publishPost(post);
+    if(response)
+    {
+      notify("Your post is published","success");
 
-    /**
-     * Go the published post.
-     */
-    router.push("/#"+post.id);
+      /**
+       * Clear.
+       */
+      title.value="";
+      body.value="";
+      loading.value=false;
+
+      /**
+       * Go the published post.
+       */
+      router.push("/#"+post.id);
+    }
+    else
+    {
+      notify("Your post is not published","warning");
+    }
+
   }
   catch(error)
   {
-    notify("Your post is not published, try again later.","error");
+    notify(error.message,"error");
   }
 };
 
