@@ -37,7 +37,7 @@ export default function(postId:number)
             /**
              * Post not found.
              */
-            throw new Error("404");
+            throw new Error(error);
         }
     };
 

@@ -1,16 +1,30 @@
 <template>
   <div>
-    <Header/>
-    <NuxtPage/>
+    <NuxtLayout>
+      <Header/>
+      <NuxtPage/>
+    </NuxtLayout>
+
   </div>
 </template>
 
 <script>
 export default {
-  name: "app"
+  name: "app",
+
+
+
 }
 </script>
 
 <style scoped>
-
+.page-enter-active,
+.page-leave-active {
+  transition: all 0.4s;
+}
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+  filter: blur(1rem);
+}
 </style>

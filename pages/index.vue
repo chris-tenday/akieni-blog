@@ -1,7 +1,5 @@
 <template>
   <div>
-
-
     <div class="container rounded-3" style=" background-color: #f4f4f4;">
 
       <div class="row mt-3 d-flex justify-content-center">
@@ -25,19 +23,26 @@
         </div>
         </div>
     </div>
-
   </div>
 </template>
 
 <script setup lang="ts">
-
 import usePosts from "~/composables/UsePosts";
 import {onMounted, ref} from "vue";
-import Header from "~/components/Header.vue";
 import PublishPost from "~/components/PublishPost.vue";
-import RestrictedFeature from "~/components/RestrictedFeature.vue";
 import SinglePost from "~/components/SinglePost.vue";
 import Loader from "~/components/Loader.vue";
+
+/**
+ * Set some tags for good SEO.
+ */
+useHead({
+  meta:[
+    { name:"description", content:"High tech blog" },
+    { name: 'keywords', content: 'Akienie, Blog, Tech , Learn, How to' },
+    { name: 'robots', content: 'index, follow' }
+  ]
+});
 
 /**
  * Used to notify the user when an error occured at server-side level

@@ -3,7 +3,7 @@
     <div class="container rounded-3" style=" background-color: #f4f4f4;">
       <div v-if="post!=null && post!=undefined" class="row bg-color mt-3 rounded-3">
         <div class="col-md-7 p-0" >
-          <img src="/assets/img/img1.webp" alt="" class="img-fluid" style="width:100%; height: 100%;">
+          <img :src="post.image" alt="" class="img-fluid" style="width:100%; height: 100%;">
         </div>
         <div class="col-md-5">
           <h5>{{post.title}}</h5>
@@ -61,10 +61,20 @@ if(post.value===null)
        * Redirect to 404 page.
        */
       router.push("/404");
+
     }
 }
 
-
+/**
+ * Set some tags for good SEO.
+ */
+useHead({
+  title:post.value?.author,
+  meta:[
+    { name:"description", content:post.value?.title },
+    { name: 'author', content: post.value?.author }
+  ]
+});
 /**
  * Get post comments from server.
  */

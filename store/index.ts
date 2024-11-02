@@ -17,7 +17,7 @@ const store=createStore({
         * @param commit
         * @param state
         */
-       async loadPosts({commit,state})
+       async loadPosts({commit,state,getters})
        {
            try
            {
@@ -32,6 +32,7 @@ const store=createStore({
                    post.userId=d.userId;
                    post.body=d.body
                    post.author=d.author;
+                   post.image=getters.GET_IMAGE; /** randomly set an image for the post */
 
                    commit("ADD_POST",post);
                });
@@ -47,7 +48,7 @@ const store=createStore({
         * @param state
         * @param lastPostId => the last post ID that was fetched from server.
         */
-       async fetchPosts({commit,state},lastPostId:number)
+       async fetchPosts({commit,state,getters},lastPostId:number)
        {
            try
            {
@@ -62,6 +63,7 @@ const store=createStore({
                    post.body=d.body;
                    post.id=d.id;
                    post.author=d.author;
+                   post.image=getters.GET_IMAGE; /** get a random image to attach to the post */
 
                    commit("ADD_POST",post);
                });
@@ -176,7 +178,7 @@ const store=createStore({
                throw error;
            }
        },
-       async getPost({commit,state},postId:number)
+       async getPost({commit,state,getters},postId:number)
        {
            try
            {
@@ -193,6 +195,8 @@ const store=createStore({
                post.title=data.title;
                post.userId=data.userId;
                post.body=data.body;
+               post.author=data.author;
+               //post.image=getters("GET_IMAGE"); /** get a random image to attach to the post */
 
                commit("ADD_POST",post);
            }

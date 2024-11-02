@@ -10,23 +10,15 @@ export const states={
     posts:[] as Post[],
     baseUrl:"http://127.0.0.1:8000/api",
     comments:[] as Comment[],
-    user:User
+    user:User,
+    images:["/assets/img/img1.webp","/assets/img/img2.jpg","/assets/img/img3.jpg","/assets/img/img4.jpg","/assets/img/img5.png","/assets/img/img6.jpg","/assets/img/img7.jpg"]
 }
 
 /**
- * Getters to giving use some flexibility when fetching data from store.
+ * Getters
  */
 export const getters={
     GET_POSTS: (state:any) : Post[] => state.posts /** get posts from the store */,
-    GET_LASTPOSTID:(state:any) : number =>{
-        let length=state.posts.length
-        if(length>0)
-        {
-            return state.posts[length-1].id;
-        }
-
-        return 0;
-    } ,
     GET_COMMENTS:(state:any) : Comment[] => state.comments,
     GET_USER:(state:any) : User|null =>{
         if(state.user===null || state.user.length===0)
@@ -47,6 +39,15 @@ export const getters={
         }
 
         return state.user;
+    },
+    GET_IMAGE:(state:any): string =>{
+
+        /**
+         * Randomly pick an image to be set for a post
+         * Simulation purpose only
+         */
+        const index=Math.floor(Math.random() * 7);
+        return state.images[index];
     }
 }
 

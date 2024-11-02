@@ -1,7 +1,7 @@
 <template>
   <div class="container rounded-3" style=" background-color: #f4f4f4;">
-    <div class="row mt-3 bg-color rounded-3" style="height:70px;">
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="row mt-3 bg-color rounded-3" style=" height:70px;">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light" style="border:1px solid gray;">
         <div class="container-fluid">
           <img src="/assets/img/logo.png" style="max-width: 150px;" class="img-fluid navbar-brand">
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

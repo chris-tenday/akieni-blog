@@ -40,6 +40,13 @@ export default defineNuxtConfig({
           type:"text/javascript"
         }
       ]
+    },
+    meta:[
+      {name:"viewport",content:"width=device-width, initial-scale=1.0"}
+    ],
+    layoutTransition:{
+      name:"layout",
+      mode:"out-in"
     }
   },
   buildModules: [
@@ -54,4 +61,10 @@ export default defineNuxtConfig({
   modules:[
     '@nuxt/test-utils/module'
   ],
+  loading: {
+    color: '#000000', // Customize the loading bar color
+    height: '20px',    // Set the height of the loading bar
+    continuous: true,  // Make the loading bar continuous
+    duration: 5000     // Duration for loading transitions
+  }
 })

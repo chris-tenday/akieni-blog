@@ -7,4 +7,5 @@ export default class Post
     title:string;
     body:string;
     author:string;
+    image:string="/assets/img/img2.jpg";
 }
