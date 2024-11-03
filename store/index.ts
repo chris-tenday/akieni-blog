@@ -250,7 +250,7 @@ const store=createStore({
                commit("STORE_COMMENT",comment);
            });
        },
-       saveNewComments({commit,state})
+       saveNewComments({commit,state},comment)
        {
            /**
             * Store the comment in the store.

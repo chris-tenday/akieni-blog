@@ -109,12 +109,10 @@ export default class Api
     {
         try
         {
-            const response=axios.post("/posts/publish",{
-                body:{
-                    title:post.title,
-                    body:post.body,
-                    userId:post.userId
-                }
+            const response=await axios.post("/posts/publish",{
+                title:post.title,
+                body:post.body,
+                userId:post.userId
             });
 
             if(response.data.status!=="success")
@@ -136,16 +134,13 @@ export default class Api
         try
         {
             const response=await axios.post("/comments/add",{
-                body:{
-                    postId:comment.postId,
-                    name:comment.name,
-                    email:comment.email,
-                    body:comment.body
+                postId:comment.postId,
+                name:comment.name,
+                email:comment.email,
+                body:comment.body
 
-                }
             });
-
-            if(response.data.status!=="success")
+            if(response.data.status!="success")
             {
                 return null;
             }

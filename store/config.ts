@@ -47,7 +47,7 @@ export const getters={
          * Simulation purpose only
          */
         const index=Math.floor(Math.random() * 7);
-        return state.images[index];
+        return state.images[0];
     }
 }
 

@@ -21,14 +21,13 @@ export default function()
             const id=await Api.publishNewPost(post);
             if(id===null)
             {
-                /**
-                 * Save in store.
-                 */
-                post.id=id;
-                await store.dispatch("saveSinglePost",post);
                 return false
             }
-
+            /**
+             * Save in store.
+             */
+            post.id=id;
+            await store.dispatch("saveSinglePost",post);
             return true;
 
 

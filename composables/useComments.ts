@@ -35,6 +35,8 @@ export default function(postId:number)
                 return false;
             }
             comment.id=id;
+            await store.dispatch("saveNewComments",comment);
+            return true;
 
         }
         catch(error)
