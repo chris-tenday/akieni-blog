@@ -7,6 +7,8 @@ import {computed, ComputedRef, ref,watch} from "vue";
 import {useStore} from "vuex";
 import Post from "~/store/models/Post";
 import {useRoute} from "vue-router";
+import {useNuxtApp} from "#app";
+import Api from "~/http/Api";
 
 export default function usePosts()
 {
@@ -51,7 +53,14 @@ export default function usePosts()
 
         try
         {
-            await store.dispatch("loadPosts");
+            //await store.dispatch("loadPosts");
+            const posts:Post[]=await Api.loadPosts(0);
+            //console.log("received:"+posts.length);
+            //console.log(posts[0].title);
+            /**
+             * Save in the store.
+             */
+            store.dispatch("savePosts",posts)
         }
         catch(error)
         {
@@ -72,7 +81,12 @@ export default function usePosts()
         console.log("ID:"+id);
         try
         {
-            await store.dispatch("fetchPosts",id);
+            //await store.dispatch("fetchPosts",id);
+            const posts:Post[]=await Api.loadPosts(id);
+            /**
+             * Save in the store.
+             */
+            store.dispatch("savePosts",posts);
         }
         catch(error)
         {

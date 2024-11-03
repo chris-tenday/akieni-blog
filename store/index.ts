@@ -2,7 +2,6 @@
 
 import {createStore} from "vuex";
 import {states,getters,mutations} from "~/store/config";
-import {useFetch} from "nuxt/app";
 import Post from "~/store/models/Post";
 import Comment from "~/store/models/Comment";
 
@@ -210,8 +209,25 @@ const store=createStore({
            }
 
 
-       }
+       },
 
+       savePosts({commit,state,getters},posts:Post[])
+       {
+           posts.map((d)=>{
+               /**
+                * Add each fetched post in the store.
+                */
+               const post=new Post();
+               post.userId=d.userId;
+               post.title=d.title;
+               post.body=d.body;
+               post.id=d.id;
+               post.author=d.author;
+               post.image=getters.GET_IMAGE; /** get a random image to attach to the post */
+
+               commit("ADD_POST",post);
+           });
+       }
 
    }
 });
