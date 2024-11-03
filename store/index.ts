@@ -109,6 +109,8 @@ const store=createStore({
         * @param commit
         * @param state
         * @param post
+        * @return true => on success or false otherwise
+        * @throws an error on any http error like 5xx,4xx,...etc.
         */
        async publishNewPost({commit,state},post:Post)
        {
@@ -125,7 +127,7 @@ const store=createStore({
 
                if(response.status!=="success")
                {
-                   return response.status;
+                   return false;
                }
 
                /**
@@ -165,13 +167,15 @@ const store=createStore({
 
                if(response.status!=="success")
                {
-                   throw new Error("Something bad happened, try commenting later!");
+                   return false;
                }
                comment.id=response.id;
                /**
                 * Store the comment in the store.
                 */
                commit("STORE_COMMENT",comment);
+
+               return true;
            }
            catch(error)
            {

@@ -2,9 +2,9 @@
   <div>
     <RestrictedFeature>
       <p>Add your comment:</p>
-      <form action="#" @submit.prevent="postComment">
+      <form action="#" @submit.prevent="postComment()">
         <div class="d-flex">
-          <input v-model="userComment" type="text" class="form-control rounded-5 input-bg" style=""  placeholder="Add a comment...">
+          <input id="commentInput" v-model="userComment" type="text" class="form-control rounded-5 input-bg" style=""  placeholder="Add a comment...">
           <button type="submit" class="btn rounded-5" style="background-color:lightgray;"><i class="fas fa-check"></i></button>
         </div>
       </form>
@@ -41,11 +41,19 @@ const postComment=async ()=>{
 
   try
   {
-    await addComment(userComment.value);
-    /**
-     * Clear.
-     */
-    userComment.value="";
+    const response=await addComment(userComment.value);
+    if(!response)
+    {
+      notify("Sorry!Error while saving your comment","error");
+    }
+    else
+    {
+      /**
+       * Clear.
+       */
+      userComment.value="";
+    }
+
   }
   catch(error)
   {

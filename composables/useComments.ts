@@ -27,7 +27,7 @@ export default function(postId:number)
             comment.name=user.name;
             comment.email=user.email;
             comment.body=body;
-            await store.dispatch("addComment",comment);
+            return await store.dispatch("addComment",comment);
         }
         catch(error)
         {
