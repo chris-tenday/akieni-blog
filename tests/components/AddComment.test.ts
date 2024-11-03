@@ -1,6 +1,5 @@
 import {expect, test,describe,vi} from "vitest";
 import AddComment from "/components/AddComment.vue"
-import store from "/store/index"
 import {mount} from "@vue/test-utils";
 import {createStore} from "vuex";
 import config from "/tests/StoreConfig";
@@ -48,7 +47,8 @@ describe("Add comment feature:",()=>{
         /**
          * Fill the comment form and submit.
          */
-        await component.find("#commentInput").setValue("Hello world");
+        const comment =await component.find("#commentInput");
+        comment.setValue("Hello world");
         await component.find("form").trigger("submit.prevent");
 
         /**
@@ -61,5 +61,6 @@ describe("Add comment feature:",()=>{
         /**
          * Assert if the UI updated with new comment.
          */
+        console.log(comment.html());
     });
 });

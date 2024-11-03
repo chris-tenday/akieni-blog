@@ -51,7 +51,7 @@ const postComment=async ()=>{
       /**
        * Clear.
        */
-      userComment.value="";
+      //userComment.value="";
     }
 
   }
