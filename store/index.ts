@@ -211,6 +211,8 @@ const store=createStore({
 
        },
 
+
+
        savePosts({commit,state,getters},posts:Post[])
        {
            posts.map((d)=>{
@@ -227,6 +229,33 @@ const store=createStore({
 
                commit("ADD_POST",post);
            });
+       },
+       saveSinglePost({commit,state,getters},post:Post)
+       {
+           commit("ADD_POST",post);
+       },
+       saveComments({commit,state},comments:Comment[])
+       {
+           comments.map((d)=>{
+               const comment=new Comment();
+               comment.id=d.id;
+               comment.postId=d.postId;
+               comment.name=d.name;
+               comment.email=d.email;
+               comment.body=d.body;
+
+               /**
+                * Store each comment in the store.
+                */
+               commit("STORE_COMMENT",comment);
+           });
+       },
+       saveNewComments({commit,state})
+       {
+           /**
+            * Store the comment in the store.
+            */
+           commit("STORE_COMMENT",comment);
        }
 
    }

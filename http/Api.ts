@@ -79,4 +79,83 @@ export default class Api
         }
     }
 
+    static async getComments(postId:number) : Promise<Comment[]>
+    {
+        try
+        {
+            const response=await axios.get(`/comments/get/${postId}`);
+            const data=response.data;
+            var comments:Comment[]=[];
+            data.map((d)=>{
+                const comment=new Comment();
+                comment.id=d.id;
+                comment.postId=d.postId;
+                comment.name=d.name;
+                comment.email=d.email;
+                comment.body=d.body;
+
+                comments.push(comment);
+            });
+
+            return comments;
+        }
+        catch(error)
+        {
+            throw new Error("Error !while fetching comments");
+        }
+    }
+
+    static async publishNewPost(post) :Promise<number|null>
+    {
+        try
+        {
+            const response=axios.post("/posts/publish",{
+                body:{
+                    title:post.title,
+                    body:post.body,
+                    userId:post.userId
+                }
+            });
+
+            if(response.data.status!=="success")
+            {
+                return null;
+            }
+
+            return response.data.id
+        }
+        catch(error)
+        {
+            throw error;
+        }
+
+    }
+
+    static async addComment(comment:Comment) :Promise<number|null>
+    {
+        try
+        {
+            const response=await axios.post("/comments/add",{
+                body:{
+                    postId:comment.postId,
+                    name:comment.name,
+                    email:comment.email,
+                    body:comment.body
+
+                }
+            });
+
+            if(response.data.status!=="success")
+            {
+                return null;
+            }
+            return response.data.id;
+        }
+        catch(error)
+        {
+            throw error;
+        }
+
+    }
+
 }

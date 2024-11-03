@@ -1,6 +1,7 @@
 import {useStore} from "vuex";
 import User from "~/store/models/User";
 import {computed, ComputedRef} from "vue";
+import Api from "~/http/Api";
 
 export default function(postId:number)
 {
@@ -27,7 +28,14 @@ export default function(postId:number)
             comment.name=user.name;
             comment.email=user.email;
             comment.body=body;
-            return await store.dispatch("addComment",comment);
+            //return await store.dispatch("addComment",comment);
+            const id=await Api.addComment(comment);
+            if(id===null)
+            {
+                return false;
+            }
+            comment.id=id;
+
         }
         catch(error)
         {
@@ -40,7 +48,13 @@ export default function(postId:number)
      */
     const fetchComments=async ()=>{
 
-        await store.dispatch("getComments",postId);
+        //await store.dispatch("getComments",postId);
+        const comments=await Api.getComments(postId);
+       // console.log("received:"+comments)
+        /**
+         * Save in the store.
+         */
+        store.dispatch("saveComments",comments);
     };
 
     return {

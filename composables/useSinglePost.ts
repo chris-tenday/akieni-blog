@@ -1,6 +1,7 @@
 import {useStore} from "vuex";
 import Post from "~/store/models/Post";
 import {computed, ComputedRef} from "vue";
+import Api from "~/http/Api";
 
 export default function(postId:number)
 {
@@ -30,14 +31,19 @@ export default function(postId:number)
     const loadPost=async ()=>{
         try
         {
-            await store.dispatch("getPost",postId);
+            //await store.dispatch("getPost",postId);
+            const post=await Api.getSinglePost(postId);
+            /**
+             * Save in store.
+             */
+            store.dispatch("saveSinglePost",post);
         }
         catch(error)
         {
             /**
              * Post not found.
              */
-            throw new Error(error);
+            throw error
         }
     };
 
