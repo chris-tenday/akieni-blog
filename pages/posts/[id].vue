@@ -1,49 +1,57 @@
 <template>
   <div>
-    <div v-if="error.length===0" class="container rounded-3" style=" background-color: #f4f4f4;">
-      <div v-if="post!=null && post!=undefined" class="row bg-color mt-3 rounded-3">
-        <div class="col-md-7 p-0" >
-          <img :src="post.image" alt="" class="img-fluid" style="width:100%; height: 100%;">
-        </div>
-        <div class="col-md-5">
-          <h5>{{post.title}}</h5>
-          <p style="font-weight: bold;"><i class="fa fa-user-circle"></i> {{post.author}}</p>
-          <div style="overflow-y: auto; max-height:350px;">
-            <p>{{post.body}}</p>
+    <div class="d-flex justify-content-center" style="height:100%;" v-if="isLoading">
+      <Loader/>
+    </div>
+    <div v-else>
+      <div v-if="error.length===0" class="container rounded-3" style=" background-color: #f4f4f4;">
+        <div v-if="post!=null && post!=undefined" class="row bg-color mt-3 rounded-3">
+          <div class="col-md-7 p-0" >
+            <img :src="post.image" alt="" class="img-fluid" style="width:100%; height: 100%;">
+          </div>
+          <div class="col-md-5">
+            <h5>{{post.title}}</h5>
+            <p style="font-weight: bold;"><i class="fa fa-user-circle"></i> {{post.author}}</p>
+            <div style="overflow-y: auto; max-height:350px;">
+              <p>{{post.body}}</p>
 
-            <hr>
-            <small><i class="fas fa-comments"></i> Comments :</small>
-            <div v-for="comment in comments" class="input-bg p-2 rounded-4 mb-2" style="border:1px solid gray; min-height:20px;">
-              <small style=""><strong>{{ comment.email }}</strong> commented:</small>
-              <p>{{comment.body}}</p>
+              <hr>
+              <small><i class="fas fa-comments"></i> Comments :</small>
+              <div v-for="comment in comments" class="input-bg p-2 rounded-4 mb-2" style="border:1px solid gray; min-height:20px;">
+                <small style=""><strong>{{ comment.email }}</strong> commented:</small>
+                <p>{{comment.body}}</p>
+              </div>
+
+              <!-- Add comment component !-->
+              <AddComment :post-id="post.id"/>
+
             </div>
 
-            <!-- Add comment component !-->
-            <AddComment :post-id="post.id"/>
 
           </div>
-
-
         </div>
       </div>
+      <div class="container rounded-3 d-flex justify-content-center" v-else style=" min-height:300px;">
+        <h1  class="m-auto"><i class="fa fa-question-circle"></i> {{error}}</h1>
+      </div>
     </div>
-    <div class="container rounded-3 d-flex justify-content-center" v-else style=" min-height:300px;">
-      <h1  class="m-auto"><i class="fa fa-question-circle"></i> {{error}}</h1>
-    </div>
+
   </div>
 </template>
 
 <script setup lang="ts">
 import useSinglePost from "~/composables/useSinglePost";
 import AddComment from "~/components/AddComment.vue";
-import {useRoute, useRouter} from "vue-router";
-import {onMounted, reactive, ref} from "vue";
+import {onBeforeRouteLeave, useRoute, useRouter} from "vue-router";
+import {onBeforeMount, onBeforeUpdate, onMounted, reactive, ref} from "vue";
 import useComments from "~/composables/useComments";
+import {useState} from "nuxt/app";
 
 const emit=defineEmits();
 
 const {params}=useRoute()
 const router=useRouter()
+const isLoading=useState("isLoading");
 
 const postId=ref(Number(params.id));
 const error=ref("");
@@ -88,9 +96,15 @@ catch(err){
   error.value="page not found";
 }
 
+onBeforeMount(()=>{
+  emit("page-loading");
+});
 onMounted(()=>{
-  console.log("ID page mounted");
   emit("page-loaded");
+
+});
+onBeforeRouteLeave(()=>{
+  emit("page-loading");
 });
 
 </script>

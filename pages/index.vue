@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div class="container rounded-3" style=" background-color: #f4f4f4;">
+    <div class="d-flex justify-content-center" style="height:100%;" v-if="isLoading">
+      <Loader/>
+    </div>
+    <div v-else class="container rounded-3" style=" background-color: #f4f4f4;">
 
       <div class="row mt-3 d-flex justify-content-center">
         <div class="col-md-6 " >
@@ -28,12 +31,16 @@
 
 <script setup lang="ts">
 import usePosts from "~/composables/UsePosts";
-import {onMounted, ref} from "vue";
+import {onBeforeMount, onBeforeUpdate, onMounted, ref} from "vue";
 import PublishPost from "~/components/PublishPost.vue";
 import SinglePost from "~/components/SinglePost.vue";
 import Loader from "~/components/Loader.vue";
+import {onBeforeRouteLeave, useRouter} from "vue-router";
+import {useState} from "nuxt/app";
 
 const emit=defineEmits();
+const router=useRouter();
+const isLoading=useState("isLoading");
 /**
  * Set some tags for good SEO.
  */
@@ -52,7 +59,7 @@ useHead({
 const dataLoadingError=ref(false);
 const errorMsg=ref("");
 
-const {posts,scrolling,loadPosts,loading,fetchError}=usePosts();
+const {posts,scrolling,loadPosts,fetchError}=usePosts();
 
 try
 {
@@ -64,9 +71,13 @@ catch(error)
   errorMsg.value=error.message;
 }
 
+onBeforeMount(()=>{
+  emit("page-loading");
+});
 onMounted(()=>{
 
   emit("page-loaded");
+
   /**
    * Whenever the user scrolls , keep fetching posts.
    */
@@ -75,6 +86,9 @@ onMounted(()=>{
   })
 });
 
+onBeforeRouteLeave(()=>{
+  emit("page-loading");
+});
 </script>
 
 <style scoped>

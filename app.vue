@@ -1,11 +1,9 @@
 <template>
   <div>
-    <div class="d-flex justify-content-center" style="height:100%;" v-if="isLoading">
-      <Loader/>
-    </div>
-    <NuxtLayout v-else>
+
+    <NuxtLayout>
       <Header/>
-      <NuxtPage @page-loaded="stopLoading()"/>
+      <NuxtPage @page-loaded="pageLoading(false)" @page-loading="pageLoading(true)"/>
     </NuxtLayout>
 
   </div>
@@ -13,29 +11,17 @@
 
 <script setup lang="ts">
 
-import {onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
-import Loader from "./components/Loader.vue";
-import eventBus from '/utilities/eventBus';
+import {useState} from "nuxt/app";
 
-const isLoading = ref(false);
+const isLoading=useState("isLoading",()=> false);
+
 
 const router=useRouter();
 
-router.beforeEach((to,from,next)=>{
-  isLoading.value=true;
-  next();
-});
-router.afterEach(()=>{
 
-  setTimeout(()=>{
-    isLoading.value=false;
-  },12000);
-});
-
-const stopLoading=()=>{
-  isLoading.value=false;
-  console.log("page loaded captured...");
+const pageLoading=(val:boolean)=>{
+  isLoading.value=val;
 }
 
 
