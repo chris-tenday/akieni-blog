@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div class="d-flex justify-content-center" style="height:100%;" v-if="isLoading">
-      <Loader/>
-    </div>
+    <PageLoader v-if="isLoading"/>
     <div v-else class="container rounded-3" style=" background-color: #f4f4f4;">
 
       <div class="row mt-3 d-flex justify-content-center">
@@ -37,6 +35,7 @@ import SinglePost from "~/components/SinglePost.vue";
 import Loader from "~/components/Loader.vue";
 import {onBeforeRouteLeave, useRouter} from "vue-router";
 import {useState} from "nuxt/app";
+import PageLoader from "~/components/PageLoader.vue";
 
 const emit=defineEmits();
 const router=useRouter();
@@ -71,9 +70,6 @@ catch(error)
   errorMsg.value=error.message;
 }
 
-onBeforeMount(()=>{
-  emit("page-loading");
-});
 onMounted(()=>{
 
   emit("page-loaded");

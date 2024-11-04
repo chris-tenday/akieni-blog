@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div class="d-flex justify-content-center" style="height:100%;" v-if="isLoading">
-      <Loader/>
-    </div>
+    <PageLoader v-if="isLoading"/>
     <div v-else>
       <div v-if="error.length===0" class="container rounded-3" style=" background-color: #f4f4f4;">
         <div v-if="post!=null && post!=undefined" class="row bg-color mt-3 rounded-3">
@@ -46,6 +44,7 @@ import {onBeforeRouteLeave, useRoute, useRouter} from "vue-router";
 import {onBeforeMount, onBeforeUpdate, onMounted, reactive, ref} from "vue";
 import useComments from "~/composables/useComments";
 import {useState} from "nuxt/app";
+import PageLoader from "~/components/PageLoader.vue";
 
 const emit=defineEmits();
 
@@ -96,9 +95,6 @@ catch(err){
   error.value="page not found";
 }
 
-onBeforeMount(()=>{
-  emit("page-loading");
-});
 onMounted(()=>{
   emit("page-loaded");
 
