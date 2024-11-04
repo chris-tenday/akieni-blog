@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container rounded-3" style=" background-color: #f4f4f4;">
+    <div v-if="error.length===0" class="container rounded-3" style=" background-color: #f4f4f4;">
       <div v-if="post!=null && post!=undefined" class="row bg-color mt-3 rounded-3">
         <div class="col-md-7 p-0" >
           <img :src="post.image" alt="" class="img-fluid" style="width:100%; height: 100%;">
@@ -27,7 +27,9 @@
         </div>
       </div>
     </div>
-
+    <div class="container rounded-3 d-flex justify-content-center" v-else style=" min-height:300px;">
+      <h1  class="m-auto"><i class="fa fa-question-circle"></i> {{error}}</h1>
+    </div>
   </div>
 </template>
 
@@ -35,7 +37,7 @@
 import useSinglePost from "~/composables/useSinglePost";
 import AddComment from "~/components/AddComment.vue";
 import {useRoute, useRouter} from "vue-router";
-import {onMounted, ref} from "vue";
+import {onMounted, reactive, ref} from "vue";
 import useComments from "~/composables/useComments";
 
 const emit=defineEmits();
@@ -44,6 +46,7 @@ const {params}=useRoute()
 const router=useRouter()
 
 const postId=ref(Number(params.id));
+const error=ref("");
 
 const {post,loadPost}=useSinglePost(postId.value);
 const {comments,fetchComments}=useComments(postId.value);
@@ -57,12 +60,9 @@ if(post.value===null)
     {
       await loadPost();
     }
-    catch(error)
+    catch(err)
     {
-      /***
-       * Redirect to 404 page.
-       */
-      router.push("/404");
+      error.value="Page not found";
 
     }
 }
@@ -81,7 +81,12 @@ useHead({
 /**
  * Get post comments from server.
  */
-await fetchComments();
+try {
+  await fetchComments();
+}
+catch(err){
+  error.value="page not found";
+}
 
 onMounted(()=>{
   console.log("ID page mounted");
