@@ -35,8 +35,10 @@
 import useSinglePost from "~/composables/useSinglePost";
 import AddComment from "~/components/AddComment.vue";
 import {useRoute, useRouter} from "vue-router";
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import useComments from "~/composables/useComments";
+
+const emit=defineEmits();
 
 const {params}=useRoute()
 const router=useRouter()
@@ -75,10 +77,17 @@ useHead({
     { name: 'author', content: post.value?.author }
   ]
 });
+
 /**
  * Get post comments from server.
  */
 await fetchComments();
+
+onMounted(()=>{
+  console.log("ID page mounted");
+  emit("page-loaded");
+});
+
 </script>
 
 <style scoped>

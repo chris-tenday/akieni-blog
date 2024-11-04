@@ -61,10 +61,5 @@ export default defineNuxtConfig({
   modules:[
     '@nuxt/test-utils/module'
   ],
-  loading: {
-    color: '#000000', // Customize the loading bar color
-    height: '20px',    // Set the height of the loading bar
-    continuous: true,  // Make the loading bar continuous
-    duration: 5000     // Duration for loading transitions
-  }
+
 })

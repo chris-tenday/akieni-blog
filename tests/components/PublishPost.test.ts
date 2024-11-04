@@ -1,79 +1,149 @@
-import PublishPost from "/components/PublishPost.vue";
-import {describe, expect, test, vi,it} from "vitest";
-import {mount} from "@vue/test-utils";
-import store from "/store/index"
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { mount } from '@vue/test-utils';
+import PublishPost from '/components/PublishPost.vue'; // Adjust the path as necessary
+import usePublishPost from '/composables/usePublishPost';
+import useNotification from '/composables/useNotification';
+import { createStore } from 'vuex';
+import { createRouter, createWebHistory } from 'vue-router';
+import store from "/tests/StoreConfig";
 import Post from "../../store/models/Post";
-import User from "../../store/models/User";
-import {createStore} from "vuex";
-import config from "/tests/StoreConfig"
 
-// Create a mock Vuex store
-const actions={
-    publishNewPost:vi.fn(()=>true)
-};
-config.actions=actions;
+// Mock the composables and Vuex store
+vi.mock('/composables/usePublishPost');
+vi.mock('/composables/useNotification');
 
 /**
- * Reusable function to mount the component
+ * Mock store.
  */
-async function mountComponent()
-{
-    return await mount(PublishPost,{
-        global:{
-            plugins:[createStore(config)]
-        }
-    });
-}
+const mockStore = createStore(store);
 
-
-describe("PublishPost component",()=>{
-
-    test("The component can render",async ()=>{
-        /**
-         * Mount the component.
-         */
-        const component=await mountComponent();
-
-        /**
-         * asserts.
-         */
-        expect(component.exists()).toBe(true);
-    });
-
-    test("the user can publish a new post",async ()=>{
-
-        /**
-         * Mount the component
-         */
-        const component=await mountComponent();
-        /**
-         * Monitor call to the publish method of the component
-         */
-        const publish=vi.spyOn(component.vm,"publish");
-
-        /**
-         * Fill up the form and submit
-         */
-        const post=new Post();
-        post.userId=1;
-        post.title="Hello title";
-        post.body="Hello body";
-        await component.find("#title").setValue(post.title);
-        await component.find("#body").setValue(post.body);
-        component.find("form").trigger("submit.prevent");
-
-        /**
-         * Asserts if the publish method is being called on form submission
-         */
-        expect(publish).toHaveBeenCalled();
-
-        /**
-         * Assert if the publishNewPost method of the vuex is being called with proper argument.
-         */
-        expect(actions.publishNewPost).toHaveBeenCalledWith(expect.any(Object),post);
-
-    });
-
+/**
+ * Mock the router for asserting whether is redirected to the section to view his published post.
+ */
+const mockRouter = createRouter({
+    history: createWebHistory(),
+    routes: [],
 });
 
+describe('PublishPost', () => {
+    let publishPostMock: any;
+    let notifyMock: any;
 
+    beforeEach(() => {
+        publishPostMock = vi.fn();
+        notifyMock = vi.fn();
+        (usePublishPost as any).mockReturnValue({ publishPost: publishPostMock });
+        (useNotification as any).mockReturnValue({ notify: notifyMock });
+    });
+
+    it('renders correctly', () => {
+        const wrapper = mount(PublishPost, {
+            global: {
+                plugins: [mockStore, mockRouter],
+            },
+        });
+
+        expect(wrapper.exists()).toBe(true);
+        expect(wrapper.find('input#title').exists()).toBe(true);
+        expect(wrapper.find('textarea#body').exists()).toBe(true);
+        expect(wrapper.find('button#submitBtn').exists()).toBe(true);
+    });
+
+    it('publishes a post when form is submitted', async () => {
+        const wrapper = mount(PublishPost, {
+            global: {
+                plugins: [mockStore, mockRouter],
+            },
+        });
+        /**
+         * Fill and submit the form
+         */
+        const post=new Post();
+        post.title="Hello world";
+        post.body="My post is wonderful";
+        post.userId=1;
+        await wrapper.find('input#title').setValue(post.title);
+        await wrapper.find('textarea#body').setValue(post.body);
+        await wrapper.find('form').trigger('submit.prevent');
+
+        /**
+         * Assert if the publish function is being called on user form submission
+         */
+        expect(publishPostMock).toHaveBeenCalledWith(post);
+    });
+
+    it('notifies on successful post publish', async () => {
+
+        publishPostMock.mockResolvedValueOnce(1);
+
+        /**
+         * Simulate successful response with post ID
+         * */
+        const wrapper = mount(PublishPost, {
+            global: {
+                plugins: [mockStore, mockRouter],
+            },
+        });
+        /**
+         * Fill and submit the form
+         */
+        await wrapper.find('input#title').setValue('Post Title');
+        await wrapper.find('textarea#body').setValue('This is the body of the post.');
+        await wrapper.find('form').trigger('submit.prevent');
+
+        /**
+         * Asserts if the notification toast is being called.
+         */
+        expect(notifyMock).toHaveBeenCalledWith('Your post is published', 'success');
+
+        /**
+         * Asserts if the inputs are cleared on post publish success.
+         */
+        expect(wrapper.vm.title).toBe('');
+        expect(wrapper.vm.body).toBe('');
+    });
+
+    it('notifies on failed post publish', async () => {
+        publishPostMock.mockResolvedValueOnce(null); // Simulate a failed response
+
+        const wrapper = mount(PublishPost, {
+            global: {
+                plugins: [mockStore, mockRouter],
+            },
+        });
+        /**
+         * Fill and submit the form.
+         */
+        await wrapper.find('input#title').setValue('Post Title');
+        await wrapper.find('textarea#body').setValue('This is the body of the post.');
+        await wrapper.find('form').trigger('submit.prevent');
+
+        /**
+         * If the post couldn't be published , the toast should display a warning message
+         */
+        expect(notifyMock).toHaveBeenCalledWith('Your post is not published', 'warning');
+    });
+
+    it('notifies on catch error', async () => {
+        const errorMessage = 'Network error';
+        publishPostMock.mockRejectedValueOnce(new Error(errorMessage)); /**  Simulate an error */
+
+        const wrapper = mount(PublishPost, {
+            global: {
+                plugins: [mockStore, mockRouter],
+            },
+        });
+
+        /**
+         * Fill and submit this form
+         */
+        await wrapper.find('input#title').setValue('Post Title');
+        await wrapper.find('textarea#body').setValue('This is the body of the post.');
+        await wrapper.find('form').trigger('submit.prevent');
+
+        /**
+         * In case anything bad happen at server-side level , the toast should display an erron message
+         */
+        expect(notifyMock).toHaveBeenCalledWith(errorMessage, 'error');
+    });
+});

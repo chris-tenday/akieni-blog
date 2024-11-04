@@ -33,10 +33,12 @@ import PublishPost from "~/components/PublishPost.vue";
 import SinglePost from "~/components/SinglePost.vue";
 import Loader from "~/components/Loader.vue";
 
+const emit=defineEmits();
 /**
  * Set some tags for good SEO.
  */
 useHead({
+  title:"Akieni",
   meta:[
     { name:"description", content:"High tech blog" },
     { name: 'keywords', content: 'Akienie, Blog, Tech , Learn, How to' },
@@ -55,6 +57,7 @@ const {posts,scrolling,loadPosts,loading,fetchError}=usePosts();
 try
 {
   await loadPosts();
+
 }
 catch(error)
 {
@@ -63,6 +66,7 @@ catch(error)
 
 onMounted(()=>{
 
+  emit("page-loaded");
   /**
    * Whenever the user scrolls , keep fetching posts.
    */

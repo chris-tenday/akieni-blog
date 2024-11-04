@@ -1,20 +1,44 @@
 <template>
   <div>
-    <NuxtLayout>
+    <div class="d-flex justify-content-center" style="height:100%;" v-if="isLoading">
+      <Loader/>
+    </div>
+    <NuxtLayout v-else>
       <Header/>
-      <NuxtPage/>
+      <NuxtPage @page-loaded="stopLoading()"/>
     </NuxtLayout>
 
   </div>
 </template>
 
-<script>
-export default {
-  name: "app",
+<script setup lang="ts">
 
+import {onMounted, ref} from "vue";
+import {useRouter} from "vue-router";
+import Loader from "./components/Loader.vue";
+import eventBus from '/utilities/eventBus';
 
+const isLoading = ref(false);
 
+const router=useRouter();
+
+router.beforeEach((to,from,next)=>{
+  isLoading.value=true;
+  next();
+});
+router.afterEach(()=>{
+
+  setTimeout(()=>{
+    isLoading.value=false;
+  },12000);
+});
+
+const stopLoading=()=>{
+  isLoading.value=false;
+  console.log("page loaded captured...");
 }
+
+
 </script>
 
 <style scoped>
