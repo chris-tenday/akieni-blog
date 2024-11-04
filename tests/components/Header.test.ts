@@ -4,7 +4,7 @@ import {expect,it} from "vitest";
 import {mount} from "@vue/test-utils";
 import store from "/store/index";
 
-it("Header can render correctly",async ()=>{
+it("can render correctly",async ()=>{
     const component=await mount(Header,{
         global:{
             plugins:[store]
